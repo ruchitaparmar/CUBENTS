@@ -22,6 +22,7 @@
 <link rel="stylesheet" href="js/animate.css">
 <script src="MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.js"></script>
+<script src="https://cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
 <style>
 body{
   background:url("bkg2.jpg");
@@ -324,12 +325,6 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
 <button class="btn btn-default" title="Save" onclick="queryDataBase()">
 <i class="fa fa-save"></i>
 </button>
-<button class="btn btn-default" title="Undo">
-<i class="fa fa-undo"></i>
-</button>
-<button class="btn btn-default" title="Redo">
-<i class="fa fa-repeat"></i>
-</button>
 <button class="btn btn-default" data-toggle="dropdown">
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
@@ -339,42 +334,7 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
       <li><a href="#" onclick="Create_Group()">Create Group</a></li>
     </ul>
 	
-</div>
-
-
-<div class="btn-group">
-<button class="btn btn-default" title="Bold" onclick="Bold();">
-<i class="fa fa-bold"></i>
-</button>
-<button class="btn btn-default" title="Italics" onclick="Italics();">
-<i class="fa fa-italic"></i>
-</button>
-<button class="btn btn-default" title="Underline">
-<i class="fa fa-underline"></i>
-</button>
-<button class="btn btn-default" title="Color" onclick="FontColor();">
-<i class="fa fa-font"></i>
-</button>
- 
-</div>
-<input type="color" id="favcolor" value="#ff0000" title="Select porion to hightlight">&nbsp;
-						
-<select style="width:120px;height:35px;margin-right:-12px;border-radius:3px" title="Choose your font" onchange="FontFace(this.value);">
-	<option selected hidden >Font Face</option>
-	<option> Times New Roman</option>
-	<option>Verdana</option>
-	<option>Monotype Corsiva</option>
-	</select>
-<select style="width:40px;height:35px;margin-left:5px;border-radius:3px" title="Choose font size" onchange="FontSize(this.value);">
-	<option selected hidden>px</option>
-	<option>10</option>
-	<option>15</option>
-	<option>20</option>
-	<option>25</option>
-	<option>30</option>
-	<option>35</option>
-	<option>40</option>
-	</select>
+</div>				
 <div class="btn btn-group">
     
 	
@@ -2258,10 +2218,13 @@ jQuery(document).on("click", "span.demo", function (event) {
 //Script to delete a text element
         function DeleteDiv()
     {
-          if(MyArray.length>0 && document.getElementById(id)!=null)
+          if(MyArray.length>=0 && document.getElementById(id)!=null)
             {
-          MyArray.splice(index, 1);
-          document.getElementById(id).remove();
+			
+    	  document.getElementById(id).style.visibility="hidden";
+		  MyArray[index].isDeleted=true;
+          //MyArray.splice(index, 1);
+          //document.getElementById(id).remove();
           }
           else if(document.getElementById(id)==null && MyArray.length!=0)
           {
@@ -2351,7 +2314,23 @@ jQuery(document).on("click", "span.demo", function (event) {
                  canvas.renderAll();
                  });           
             }
-        });
+        })
+		
+				.drag("end",function(ev,dd)
+				{
+				    for(var k=0;k<MyArray.length;k++)
+						{
+						  if($( document.getElementById(MyArray[k].id)).is('.selected'))
+						   {
+						     var offset = $(document.getElementById(MyArray[k].id)).offset();
+							 var xPos = offset.left;
+							 var yPos = offset.top;
+						     MyArray[k].xPos=xPos;
+					   	     MyArray[k].yPos=yPos;
+					//	     console.log("index: "+k+"Xpos: "+MyArray[k].xPos+"Ypos: "+MyArray[k].xPos);
+						   }
+						}
+				});
       var s=document.getElementById(id).innerHTML;
       var i="flash";
       var o="flash";
@@ -2359,17 +2338,16 @@ jQuery(document).on("click", "span.demo", function (event) {
       var l=offset.offsetLeft;
       var t=offset.offsetTop;
       MyArray.push({id:"T"+c,Data:s,in_anim:i,out_anim:o,xPos:l,yPos:t,in_delay:"2",out_delay:"2",in_duration:"3000",out_duration:"3000",in_order:"1",out_order:"1"});
-        c++;
+      $(document.getElementById("#"+x)).attr( 'contenteditable', true );
+	  CKEDITOR.inline( "T"+c,{});
+	  c++;
     
     function singleClick(e) {
-        console.log('click');
-        $(x).click(function()
-    {
+     
            $( this ).toggleClass("selected");
             
                    $(this).draggable( "option", "disabled", true );
                  $(this).attr('contenteditable','true');
-          });
     }
       function doubleClick(e)
       {
@@ -2401,118 +2379,6 @@ jQuery(document).on("click", "span.demo", function (event) {
       });
     }
           
-          
-    
-//Script to add font color in text
-        function FontColor()
-    {
-            var range;
-            var c=document.getElementById("favcolor").value;
-            if (window.getSelection && window.getSelection().getRangeAt) {
-            var html='<font color='+c+'>' + window.getSelection() + '</font>';
-            range = window.getSelection().getRangeAt(0);
-            range.deleteContents();
-            var div = document.createElement("span");
-            div.innerHTML = html;
-            var frag = document.createDocumentFragment(), child;
-            while ( (child = div.firstChild) ) {
-            frag.appendChild(child);
-            }
-            range.insertNode(frag);
-            } 
-            else if (document.selection && document.selection.createRange)
-            {
-            range = document.selection.createRange();
-            range.pasteHTML(html);
-            }
-            MyArray[index].Data=document.getElementById(id).innerHTML;
-    }     
-//Script to make text Bold
-        function Bold()
-    {
-            var range;
-            if (window.getSelection && window.getSelection().getRangeAt) {
-            var html="<strong>"+window.getSelection()+"</strong>";
-            range = window.getSelection().getRangeAt(0);
-            range.deleteContents();
-            var div = document.createElement("span");
-            div.innerHTML = html;
-            var frag = document.createDocumentFragment(), child;
-            while ( (child = div.firstChild) ) {
-            frag.appendChild(child);
-            }
-            range.insertNode(frag);
-            } else if (document.selection && document.selection.createRange) {
-            range = document.selection.createRange();
-            range.pasteHTML(html);
-            }
-            var d=document.getElementById(id);
-              var s=d.innerHTML;            
-            console.log(s);
-            MyArray[index].Data=document.getElementById(id).innerHTML;
-    }
-//Script to make text Italics   
-    function Italics() {
-      var range;
-      if (window.getSelection && window.getSelection().getRangeAt) {
-      var html="<em>"+window.getSelection()+"</em>";
-      range = window.getSelection().getRangeAt(0);
-      range.deleteContents();
-      var div = document.createElement("span");
-      div.innerHTML = html;
-      var frag = document.createDocumentFragment(), child;
-      while ( (child = div.firstChild) ) {
-      frag.appendChild(child);
-      }
-      range.insertNode(frag);
-      } else if (document.selection && document.selection.createRange) {
-      range = document.selection.createRange();
-      range.pasteHTML(html);
-      }
-      MyArray[index].Data=document.getElementById(id).innerHTML;
-    }
-//Script to give Font Size
-    function FontSize(value) {
-      var range;
-      if (window.getSelection && window.getSelection().getRangeAt) {
-      var html='<span style="font-size:'+value+'px">'+window.getSelection()+"</span>";
-      //var html="<font size="+value+">"+window.getSelection()+"</font>";
-      range = window.getSelection().getRangeAt(0);
-      range.deleteContents();
-      var div = document.createElement("span");
-      div.innerHTML = html;
-      var frag = document.createDocumentFragment(), child;
-      while ( (child = div.firstChild) ) {
-      frag.appendChild(child);
-      }
-      range.insertNode(frag);
-      } else if (document.selection && document.selection.createRange) {
-      range = document.selection.createRange();
-      range.pasteHTML(html);
-      }
-      MyArray[index].Data=document.getElementById(id).innerHTML;
-    }
-//Script to change Font Face
-    function FontFace(value) 
-    {
-            var range;
-            if (window.getSelection && window.getSelection().getRangeAt) {
-            var html='<font face='+value+'>' +window.getSelection()+ '</font>';
-            range = window.getSelection().getRangeAt(0);
-            range.deleteContents();
-            var div = document.createElement("span");
-            div.innerHTML = html;
-            var frag = document.createDocumentFragment(), child;
-            while ( (child = div.firstChild) ) {
-            frag.appendChild(child);
-            }
-            range.insertNode(frag);
-            } else if (document.selection && document.selection.createRange) {
-            range = document.selection.createRange();
-            range.pasteHTML(html);
-            }
-            MyArray[index].Data=document.getElementById(id).innerHTML;
-    }
 //Script to give in animation
     function in_anim(value)
     {
