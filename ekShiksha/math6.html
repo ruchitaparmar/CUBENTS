@@ -395,18 +395,19 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <option value="ease">Ease</option>
     <option value="disappear">Disappear</option>		
     </select>
-		Choose easing attribute
+<br> <br>
+		Easing attribute
 		<select id="att_ease_g" onChange= "set_att_ease(this.value);">
 
-		<option value="left">Left</option>
+	<option value="left">Left</option>
     <option value="top">Top</option>
     <option value="width">Width</option>
     <option value="height">Height</option>
     <option value="angle">Angle</option>
     <option value="opacity">Opacity</option>
-		</select><br><br>
-
-    Choose Easing Effect
+		</select>
+&nbsp;
+    Easing Effect
    <select id="easing_g" onChange = "set_easing(this.value);">
     
     <option value="easeInQuad">easeInQuad</option>
@@ -442,7 +443,7 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
   </select>
 
 		
-    <br> Delay:<input id="delay_g" onchange="delay_change_g();">
+    <br> <br> Delay:<input id="delay_g" onchange="delay_change_g();">
 
 		<!-- <input type="text" style="width:60px"> -->&nbsp;&nbsp;
 		<br> Duration:<input id="duration_g" onchange="duration_change_g();">
@@ -452,9 +453,9 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <br> Animation Order:<input id="a_order_g" onchange="anim_order_g()">
 
 		<!-- <input type="text" style="width:60px"> -->&nbsp;
-		<br><br>
 
     <br> Ease Attribute Value:<input id="ease_value_g" onchange="ease_value_g()">
+<br> <br>
         <button class="btn btn-primary" data-dismiss="modal" onclick="show_animation();">Show Graphics Animation</button>
 
 		</center>
@@ -486,18 +487,17 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
  <li> <center><div class="btn btn-group">
+
 <button type="button" class="btn btn-default" onclick="shape='line'" title="Line">&#9585;</button>
+
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='rectangle'" title="Rectangle">&#9645;</button>
-<button type="button" class="btn btn-default" style="font-size:20px" title="Square">&#9633;</button>
+
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='triangle'" title="Triangle">&#9651;</button>
-</div>
-</center>
-</li>
-<li> <center><div class="btn btn-group" style="margin-top:-12px">
-<button type="button" class="btn btn-default" style="font-size:20px" title="Right angle triangle">&#8895;</button>
+
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='circle'" title="Circle">&#9711;</button>
-<button type="button" class="btn btn-default" style="font-size:25px" title="Trapezium">&#9671;</button>
-<button type="button" class="btn btn-default" style="font-size:25px" title="Arc">&#9692;</button>
+
+<button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='ellipse'" title="Ellipse"> <img src="ellipse_b.png" width="20px" height="20px"></button>
+
 </div>
 </center>
 </li>
