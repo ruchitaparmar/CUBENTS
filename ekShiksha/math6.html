@@ -2248,8 +2248,8 @@ jQuery(document).on("click", "span.demo", function (event) {
             var offset = $(this).offset();
             var xPos = offset.left;
             var yPos = offset.top;
-      MyArray[index].xPos=xPos;
-      MyArray[index].yPos=yPos;
+      MyArray[index].left=xPos;
+      MyArray[index].top=yPos;
              },
             })
       .drag("init",function(dd){
@@ -2325,9 +2325,9 @@ jQuery(document).on("click", "span.demo", function (event) {
 						     var offset = $(document.getElementById(MyArray[k].id)).offset();
 							 var xPos = offset.left;
 							 var yPos = offset.top;
-						     MyArray[k].xPos=xPos;
-					   	     MyArray[k].yPos=yPos;
-					//	     console.log("index: "+k+"Xpos: "+MyArray[k].xPos+"Ypos: "+MyArray[k].xPos);
+						     MyArray[k].left=xPos;
+					   	     MyArray[k].top=yPos;
+					//	     console.log("index: "+k+"Xpos: "+MyArray[k].left+"Ypos: "+MyArray[k].top);
 						   }
 						}
 				});
@@ -2337,7 +2337,7 @@ jQuery(document).on("click", "span.demo", function (event) {
       var offset=document.getElementById(id);
       var l=offset.offsetLeft;
       var t=offset.offsetTop;
-      MyArray.push({id:"T"+c,Data:s,in_anim:i,out_anim:o,xPos:l,yPos:t,in_delay:"2",out_delay:"2",in_duration:"3000",out_duration:"3000",in_order:"1",out_order:"1"});
+      MyArray.push({id:"T"+c,Data:s,in_anim:i,out_anim:o,left:l,top:t,in_delay:"2",out_delay:"2",in_duration:"3000",out_duration:"3000",in_order:"1",out_order:"1"});
       $(document.getElementById("#"+x)).attr( 'contenteditable', true );
 	  CKEDITOR.inline( "T"+c,{});
 	  c++;
