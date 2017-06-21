@@ -1,0 +1,2724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maths</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.js"></script>
+<script src="http://threedubmedia.com/inc/js/jquery-1.7.2.js"></script>
+<script src="http://threedubmedia.com/inc/js/jquery.event.drag-2.2.js"></script>
+<script src="http://threedubmedia.com/inc/js/jquery.event.drag.live-2.2.js"></script>
+<script src="http://threedubmedia.com/inc/js/jquery.event.drop-2.2.js"></script>
+<script src="http://threedubmedia.com/inc/js/jquery.event.drop.live-2.2.js"></script>
+<script src="http://threedubmedia.com/inc/js/excanvas.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="./animate.css">
+<script src="js/MathJax-master/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.js"></script>
+<script src="https://cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
+<style>
+
+body{
+  background:url("images.png");
+}
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+	margin-top:52px;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #000000;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 8px;
+    text-decoration: none;
+    font-size: 20px;
+    color: white;
+    display: block;
+    transition: 0.3s;
+	font-family:Comic sans MS;
+}
+
+.sidenav a:hover, .offcanvas a:focus{
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 20px;
+    margin-left: 50px;
+}
+
+#main {
+    transition: margin-left .5s;
+    padding: 16px;
+	position:relative;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.drag {
+  position: absolute;
+  border: 1px solid #89B;
+  cursor: move;
+  top: 120px;
+  }
+.selected {
+  background-color: #ECB;
+  border-color: #B98;
+  }
+#menubar{
+border-radius:3px 3px 0 0;
+min-height:25px;
+padding:5px 0;
+margin-top:-20px;
+}
+button[type="button"]{
+width:30px;
+height:30px;
+padding:0px 3px 0px 3px;
+}
+/*#div2{
+position:absolute;
+width:1141px;
+height:1004px;
+border-style:groove;
+
+}*/
+
+.hide {
+    display: none;
+}
+
+.show {
+    z-index:1000;
+    position: absolute;
+    background-color:#C0C0C0;
+    border: 1px solid blue;
+    padding: 2px;
+    display: block;
+    margin: 0;
+    list-style-type: none;
+    list-style: none;
+}
+
+#canvas-wrap { 
+	position:relative;
+	border:5px solid #000000;
+	overflow-x: scroll;
+	width: 1140px;
+	height: 1000px;
+	padding:0px;
+} /* Make this a positioned parent */
+#canv{
+	position:absolute;
+	/*border-style:groove;*/
+	z-index: -2;
+	background-color:white;
+}
+.upper-canvas .lower-canvas{
+  /*z-index:-2;*/
+}
+.demo{
+  z-index:3;
+  position:absolute; 
+  top:20px; 
+  left:30px; 
+}
+</style>
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "165px";
+   
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("main").style.marginLeft= "0";
+}
+</script>
+<script>
+/*function myFunction(obj) {
+
+    if(obj.value==1)
+    {
+        document.getElementById("div2").style.zIndex = "1";
+        document.getElementById("canv").style.zIndex = "-1";
+    }
+    else if(obj.value==2)
+    {
+        document.getElementById("canv").style.zIndex = "1";
+        document.getElementById("div2").style.zIndex = "-1";
+    }
+}*/
+</script>
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    showProcessingMessages: false,
+    tex2jax: { inlineMath: [['$','$'],['\\(','\\)']] }
+  });
+</script>
+<script>
+var Preview = {
+  delay: 150,        // delay after keystroke before updating
+
+  preview: null,     // filled in by Init below
+  buffer: null,      // filled in by Init below
+
+  timeout: null,     // store setTimout id
+  mjRunning: false,  // true when MathJax is processing
+  mjPending: false,  // true when a typeset has been queued
+  oldText: null,     // used to check if an update is needed
+
+  //
+  //  Get the preview and buffer DIV's
+  //
+  Init: function () {
+    this.preview = document.getElementById("MathPreview");
+    this.buffer = document.getElementById("MathBuffer");
+  },
+
+  //
+  //  Switch the buffer and preview, and display the right one.
+  //  (We use visibility:hidden rather than display:none since
+  //  the results of running MathJax are more accurate that way.)
+  //
+  SwapBuffers: function () {
+    var buffer = this.preview, preview = this.buffer;
+    this.buffer = buffer; this.preview = preview;
+    buffer.style.visibility = "hidden"; buffer.style.position = "absolute";
+    preview.style.position = ""; preview.style.visibility = "";
+  },
+
+  //
+  //  This gets called when a key is pressed in the textarea.
+  //  We check if there is already a pending update and clear it if so.
+  //  Then set up an update to occur after a small delay (so if more keys
+  //    are pressed, the update won't occur until after there has been 
+  //    a pause in the typing).
+  //  The callback function is set up below, after the Preview object is set up.
+  //
+  Update: function () {
+    if (this.timeout) {clearTimeout(this.timeout)}
+    this.timeout = setTimeout(this.callback,this.delay);
+  },
+
+  //
+  //  Creates the preview and runs MathJax on it.
+  //  If MathJax is already trying to render the code, return
+  //  If the text hasn't changed, return
+  //  Otherwise, indicate that MathJax is running, and start the
+  //    typesetting.  After it is done, call PreviewDone.
+  //  
+  CreatePreview: function () {
+    Preview.timeout = null;
+    if (this.mjPending) return;
+    var text = document.getElementById("MathInput").value;
+    if (text === this.oldtext) return;
+    if (this.mjRunning) {
+      this.mjPending = true;
+      MathJax.Hub.Queue(["CreatePreview",this]);
+    } else {
+      this.buffer.innerHTML = this.oldtext = text;
+      this.mjRunning = true;
+      MathJax.Hub.Queue(
+  ["Typeset",MathJax.Hub,this.buffer],
+  ["PreviewDone",this]
+      );
+    }
+  },
+
+  //
+  //  Indicate that MathJax is no longer running,
+  //  and swap the buffers to show the results.
+  //
+  PreviewDone: function () {
+    this.mjRunning = this.mjPending = false;
+    this.SwapBuffers();
+  }
+
+};
+
+//
+//  Cache a callback to the CreatePreview action
+//
+Preview.callback = MathJax.Callback(["CreatePreview",Preview]);
+Preview.callback.autoReset = true;  // make sure it can run more than once
+
+</script>
+</head>
+<body>
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a data-toggle="collapse" data-parent="#accordion1" href="#firstLink">Topic1</a>
+
+                <ul id="firstLink" class="collapse">
+                    <li><a href="#">SubTopic1</a></li>
+                    <li><a href="#">SubTopic2</a><</li>
+                </ul>
+<a data-toggle="collapse" data-parent="#accordion1" href="#secondLink">Topic2</a>
+
+                <ul id="secondLink" class="collapse">
+                    <li><a href="#">SubTopic1</a></li>
+                    <li><a href="#">SubTopic2</a><</li>
+                </ul>
+<a data-toggle="collapse" data-parent="#accordion1" href="#thirdLink">Topic3</a>
+
+                <ul id="thirdLink" class="collapse">
+                    <li><a href="#">SubTopic1</a></li>
+                    <li><a href="#">SubTopic2</a><</li>
+                </ul>
+
+</div>
+
+ <nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+     <a class="navbar-brand" onclick="openNav()"><i class="glyphicon glyphicon-tree-conifer" title="Topic tree"></i></a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Help</a></li>
+        <li><a href="#">About us</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-sign-in"></span> Join us</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="row">
+<div class="col-sm-1">
+
+
+</div>
+<div class="col-sm-11">
+<div class="row-fluid container">
+<div id="menubar" class="row-fluid" style="background-color:#33B8FF">
+
+<div class="btn btn-group">
+<button class="btn btn-default" title="Save" onclick="queryDataBase()">
+<i class="fa fa-save"></i>
+</button>
+<button class="btn btn-default" data-toggle="dropdown">
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+      <li><a href="#">New</a></li>
+      <li><a href="#">Open</a></li>
+      <li><a href="#">Preview</a></li>
+      <li><a href="#" onclick="Create_Group()">Create Group</a></li>
+    </ul>
+	
+</div>				
+<div class="btn btn-group">
+    
+	
+	<button class="btn btn-default" data-toggle="modal" data-target="#myModal2" title="Add animation">Animation</button>
+	<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Please give your specifications</h4>
+        </div>
+        <div class="modal-body">
+         
+		 <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#menu1">Text</a></li>
+    <li><a data-toggle="tab" href="#menu2">Graphics</a></li>
+    <li><a data-toggle="tab" href="#menu3">Equation</a></li>
+  </ul>
+
+  <div class="tab-content">
+   
+    <div id="menu1" class="tab-pane fade in active">
+      <center style="padding:20px 0px 20px 0px">
+		In
+		<select onchange="in_anim(this.value);">
+		<option value="flash">flash</option><option value="bounce">bounce</option><option value="shake">shake</option><option value="tada">tada</option><option value="swing">swing</option><option value="wobble">wobble</option><option value="pulse">pulse</option><option value="flip">flip</option><option value="flipInX">flipInX</option><option value="flipInY">flipInY</option><option value="fadeIn">fadeIn</option><option value="fadeInUp">fadeInUp</option><option value="fadeInDown">fadeInDown</option><option value="fadeInLeft">fadeInLeft</option><option value="fadeInRight">fadeInRight</option><option value="fadeInUpBig">fadeInUpBig</option><option value="fadeInDownBig">fadeInDownBig</option><option value="fadeInLeftBig">fadeInLeftBig</option><option value="fadeInRightBig">fadeInRightBig</option><option value="bounceIn">bounceIn</option><option value="bounceInDown">bounceInDown</option><option value="bounceInUp">bounceInUp</option><option value="bounceInLeft">bounceInLeft</option><option value="bounceInRight">bounceInRight</option><option value="rotateIn">rotateIn</option><option value="rotateInDownLeft">rotateInDownLeft</option><option value="rotateInDownRight">rotateInDownRight</option><option value="rotateInUpLeft">rotateInUpLeft</option><option value="rotateInUpRight">rotateInUpRight</option><option value="rollIn">rollIn</option>
+		</select>&nbsp;&nbsp;
+		Delay
+		<input type="text" style="width:40px" id="in_delay" onchange="in_delay_change();">&nbsp;&nbsp;
+		Duration
+		<input type="text" style="width:40px" id="in_duration" onchange="in_duration_change();">&nbsp;&nbsp;
+		Animation order
+		<input type="text" style="width:40px" id="in_a_order" onchange="in_anim_order()">&nbsp;
+		<br><br>
+		Out
+		<select onchange="out_anim(this.value);">
+		<option value="flash">flash</option><option value="bounce">bounce</option><option value="shake">shake</option><option value="tada">tada</option><option value="swing">swing</option><option value="wobble">wobble</option><option value="pulse">pulse</option><option value="flip">flip</option><option value="flipOutX">flipOutX</option><option value="flipOutY">flipOutY</option><option value="fadeOut">fadeOut</option><option value="fadeOutUp">fadeOutUp</option><option value="fadeOutDown">fadeOutDown</option><option value="fadeOutLeft">fadeOutLeft</option><option value="fadeOutRight">fadeOutRight</option><option value="fadeOutUpBig">fadeOutUpBig</option><option value="fadeOutDownBig">fadeOutDownBig</option><option value="fadeOutLeftBig">fadeOutLeftBig</option><option value="fadeOutRightBig">fadeOutRightBig</option><option value="bounceOut">bounceOut</option><option value="bounceOutDown">bounceOutDown</option><option value="bounceOutUp">bounceOutUp</option><option value="bounceOutLeft">bounceOutLeft</option><option value="bounceOutRight">bounceOutRight</option><option value="rotateOut">rotateOut</option><option value="rotateOutDownLeft">rotateOutDownLeft</option><option value="rotateOutDownRight">rotateOutDownRight</option><option value="rotateOutUpLeft">rotateOutUpLeft</option><option value="rotateOutUpRight">rotateOutUpRight</option><option value="hinge">hinge</option><option value="rollOut">rollOut</option>
+		</select>&nbsp;&nbsp;
+		Delay
+		<input type="text" style="width:40px" id="out_delay" onchange="out_delay_change();">&nbsp;
+		Duration
+		<input type="text" style="width:40px" id="out_duration" onchange="out_duration_change();">&nbsp;
+		Animation order
+		<input type="text" style="width:40px" id="out_a_order" onchange="out_anim_order()">&nbsp;
+		</center>
+		<button class="btn btn-primary" data-dismiss="modal" onclick="f1();">Show Text Animation</button>
+     
+    </div>
+    <div id="menu2" class="tab-pane fade">
+     
+      <center style="padding:20px 0px 20px 0px">
+		Animation effect
+		<select id="animate_g" onChange = "set_effect(this.value);">
+		<option value="fade in">Fade In</option>
+    <option value="fade out in">Fade Out-In</option>
+    <option value="draw">Draw</option>
+    <option value="ease">Ease</option>
+    <option value="disappear">Disappear</option>		
+    </select>
+		Choose easing attribute
+		<select id="att_ease_g" onChange= "set_att_ease(this.value);">
+
+		<option value="left">Left</option>
+    <option value="top">Top</option>
+    <option value="width">Width</option>
+    <option value="height">Height</option>
+    <option value="angle">Angle</option>
+    <option value="opacity">Opacity</option>
+		</select><br><br>
+
+    Choose Easing Effect
+   <select id="easing_g" onChange = "set_easing(this.value);">
+    
+    <option value="easeInQuad">easeInQuad</option>
+    <option value="easeOutQuad">easeOutQuad</option>
+    <option value="easeInOutQuad">easeInOutQuad</option>
+    <option value="easeInCubic">easeInCubic</option>
+    <option value="easeOutCubic">easeOutCubic</option>
+    <option value="easeInOutCubic">easeInOutCubic</option>
+    <option value="easeInQuart">easeInQuart</option>
+    <option value="easeOutQuart">easeOutQuart</option>
+    <option value="easeInOutQuart">easeInOutQuart</option>
+    <option value="easeInQuint">easeInQuint</option>
+    <option value="easeOutQuint">easeOutQuint</option>
+    <option value="easeInOutQuint">easeInOutQuint</option>
+    <option value="easeInSine">easeInSine</option>
+    <option value="easeOutSine">easeOutSine</option>
+    <option value="easeInOutSine">easeInOutSine</option>
+    <option value="easeInExpo">easeInExpo</option>
+    <option value="easeOutExpo">easeOutExpo</option>
+    <option value="easeInOutExpo">easeInOutExpo</option>
+    <option value="easeInCirc">easeInCirc</option>
+    <option value="easeOutCirc">easeOutCirc</option>
+    <option value="easeInOutCirc">easeInOutCirc</option>
+    <option value="easeInElastic">easeInElastic</option>
+    <option value="easeOutElastic">easeOutElastic</option>
+    <option value="easeInOutElastic">easeInOutElastic</option>
+    <option value="easeInBack">easeInBack</option>
+    <option value="easeOutBack">easeOutBack</option>
+    <option value="easeInOutBack">easeInOutBack</option>
+    <option value="easeInBounce">easeInBounce</option>
+    <option value="easeOutBounce">easeOutBounce</option>
+    <option value="easeInOutBounce">easeInOutBounce</option>
+  </select>
+
+		
+    <br> Delay:<input id="delay_g" onchange="delay_change_g();">
+
+		<!-- <input type="text" style="width:60px"> -->&nbsp;&nbsp;
+		<br> Duration:<input id="duration_g" onchange="duration_change_g();">
+
+		<!-- <input type="text" style="width:60px"> -->&nbsp;&nbsp;
+		
+    <br> Animation Order:<input id="a_order_g" onchange="anim_order_g()">
+
+		<!-- <input type="text" style="width:60px"> -->&nbsp;
+		<br><br>
+
+    <br> Ease Attribute Value:<input id="ease_value_g" onchange="ease_value_g()">
+        <button class="btn btn-primary" data-dismiss="modal" onclick="show_animation();">Show Graphics Animation</button>
+
+		</center>
+    </div>
+    <div id="menu3" class="tab-pane fade in active">
+    <center>
+      Animation Order:<input id="equationAnimationOrder" onchange="changeAnimationOrder()">
+    </center>
+    </div>
+  </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+	<button class="btn btn-default" title="Insert new div element" onclick="NewDiv();"><i class="fa fa-plus"></i>
+	</button>
+	<button class="btn btn-default" title="Delete div element" onclick="DeleteDiv();"><i class="fa fa-minus"></i>
+	</button>
+	
+</div>
+
+
+<div class="btn btn-group">
+<button class="btn btn-default" data-toggle="dropdown" title="Insert shapes" onclick="" value="2" style="margin-left:-10px">Shapes
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu">
+ <li> <center><div class="btn btn-group">
+<button type="button" class="btn btn-default" onclick="shape='line'" title="Line">&#9585;</button>
+<button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='rectangle'" title="Rectangle">&#9645;</button>
+<button type="button" class="btn btn-default" style="font-size:20px" title="Square">&#9633;</button>
+<button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='triangle'" title="Triangle">&#9651;</button>
+</div>
+</center>
+</li>
+<li> <center><div class="btn btn-group" style="margin-top:-12px">
+<button type="button" class="btn btn-default" style="font-size:20px" title="Right angle triangle">&#8895;</button>
+<button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='circle'" title="Circle">&#9711;</button>
+<button type="button" class="btn btn-default" style="font-size:25px" title="Trapezium">&#9671;</button>
+<button type="button" class="btn btn-default" style="font-size:25px" title="Arc">&#9692;</button>
+</div>
+</center>
+</li>
+
+<li> <center><div class="btn btn-group" style="margin-top:-12px">
+<input type="color" id="bottle" style="font-size:15pt">
+<button onclick="Fill()">Fill</button>
+</div>
+</center>
+</li>
+
+</ul>
+<button class="btn btn-default" onclick="deleteObjects()" title="Remove shape">
+<i class="fa fa-trash"></i>
+</button>
+</div>
+<button class="btn btn-default" title="Insert equation" data-toggle="modal" data-target="#myModal">&#937;
+</button>&nbsp;
+<!-- Hints Here -->
+<button class="btn btn-default" title="Add Hint" data-toggle="modal" data-target="#myModal3"><i class="glyphicon glyphicon-question-sign"></i></button>
+
+  <div class="modal fade" id="myModal3" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Please provide hint description: </h4>
+        </div>
+        <div class="modal-body">
+
+  <div class="tab-content">
+   
+    <div id="menu1" class="tab-pane fade in active">
+      <center style="padding:20px 0px 20px 0px">
+  
+    Brief Hint:
+    <br></br>
+    <textarea rows="1" cols="50" id="smallHint" onchange="smallHint();">
+    </textarea> 
+    <br></br>
+
+    Hint Description:
+    <br></br>
+    <textarea rows="5" cols="50" id="bigHint" onchange="bigHint();">
+    </textarea>
+    <br></br>
+
+    Links for further reference:
+    <br></br>
+    <textarea rows="1" cols="50" id="URLs" onchange="URLs();">
+    </textarea>
+    <br><br>
+     
+    </div>
+   
+  </div> 
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
+<script>
+function smallHint(){
+ var smallHint=document.getElementById("smallHint").value;
+ // console.log(val);
+  document.getElementById("displaySmallHint").innerHTML = smallHint; 
+  MyArray[index].smallHint=smallHint;
+  //console.log(index);
+  //console.log(MyArray[index].smallHint);
+  document.getElementById(id).title=smallHint;
+}
+
+function bigHint(){
+  var bigHint=document.getElementById("bigHint").value;
+ // console.log(val);
+  
+  MyArray[index].bigHint=bigHint;
+  document.getElementById("displayBigHint").innerHTML = MyArray[index].bigHint ;
+  //console.log(index);
+  //console.log(MyArray[index].bigHint);
+}
+
+function URLs(){
+  var urls=document.getElementById("URLs").value;
+  //document.getElementById("displayURLs").innerHTML = urls;
+  MyArray[index].URLs=urls;
+  //console.log(index);
+  //console.log(MyArray[index].URLs);
+
+  document.getElementById("anchor1").href=MyArray[index].URLs;
+  document.getElementById("anchor1").innerHTML = MyArray[index].URLs; 
+
+}
+
+</script>
+
+<button class="btn btn-default" title="Show Hint" data-toggle="modal" data-target="#myModal4"><i class="glyphicon glyphicon-info-sign"></i></button>
+
+<div class="modal fade" id="myModal4" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Hints for the selected element: </h4>
+        </div>
+        <div class="modal-body">
+
+  <div class="tab-content">
+   
+    <div id="menu1" class="tab-pane fade in active">
+      <center style="padding:20px 0px 20px 0px">
+  
+    Brief Hint:
+    <br></br> 
+    <p id="displaySmallHint"></p>
+    <br></br>
+
+    Hint Description:
+    <br></br>
+    <p id="displayBigHint"></p>
+    <br></br>
+
+    Links for further reference:
+    <br></br>
+      <a id="anchor1" href="#" target="_blank">#</a>
+    <br></br>
+     
+    </div>
+   
+  </div> 
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+ <!-- Hint Ends-->
+<button class="btn btn-default" onclick="playAnimation()" title="Play final animation"><i class="fa fa-play"></i></button>&nbsp;&nbsp;
+<div class="modal fade" id="myModal" data-target="#myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header orange">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+	
+  Welcome to Equation Editor &nbsp;
+  <button class="btn btn-default" type="button" data-toggle="dropdown">&#8721;
+    <span class="caret"></span></button>
+    <ul class="dropdown-menu" style="overflow:scroll;height:150px;width:200px;top:40px">
+      
+   <li><center>
+  <div class="btn btn-group">
+  <button type="button" class="btn btn-default symbol">&#8704;</button><!--for all-->
+  <button type="button" class="btn btn-default symbol">&#8712;</button><!--for each-->
+  <button type="button" class="btn btn-default supsub" >&#8721;</button><!--Sum-->
+  <button type="button" class="btn btn-default supsub">&#8719;</button><!--Prod-->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8734;</button><!--Infin-->
+  <button type="button" class="btn btn-default operate">+</button><!--Plus-->
+  <button type="button" class="btn btn-default operate">-</button><!--minus-->
+  <button type="button" class="btn btn-default operate">*</button><!--star-->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default" id="fraction">a/b</button><!--frac-->
+  <button type="button" class="btn btn-default" id="power">a^b</button><!--power-->
+  <button type="button" class="btn btn-default sqroot">&#8730;</button><!--Square Root-->
+  <button type="button" class="btn btn-default curoot">&#8731;</button><!--Cube root-->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default supsub">&#8745;</button><!--Intersection-->
+  <button type="button" class="btn btn-default nroot">n&#8730;</button><!--nth root-->
+  <button type="button" class="btn btn-default operate">&#8706;</button><!--part differential-->
+  <button type="button" class="btn btn-default operate">&#100;</button><!--derivative -->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default supsub">&#8747;</button><!--Integral-->
+  <button type="button" class="btn btn-default supsub">&#8748;</button><!--Double Integral-->
+  <button type="button" class="btn btn-default supsub">&#8749;</button><!--Triple Integral-->
+  <button type="button" class="btn btn-default supsub">&#8746;</button><!--Union-->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default supsub">&#8750;</button><!--Countour Integral-->
+  <button type="button" class="btn btn-default supsub">&#8751;</button><!--d contour Integral-->
+  <button type="button" class="btn btn-default supsub">&#8752;</button><!--t contour Integral-->
+  <button type="button" class="btn btn-default symbol">&#8756;</button><!--therefore -->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8757;</button><!--Since -->
+  <button type="button" class="btn btn-default symbol">&#8840;</button><!--Not Subset-->
+  <button type="button" class="btn btn-default symbol">&#8838;</button><!--Subset-->
+  <button type="button" class="btn btn-default operate">&#8711;</button><!-- Del Operator-->
+  </div>
+  </center></li>
+
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#964;</button><!--Since -->
+  <button type="button" class="btn btn-default symbol">&#967;</button><!--Not Subset-->
+  <button type="button" class="btn btn-default symbol">&#966;</button><!--Subset-->
+  <button type="button" class="btn btn-default operate">&#969;</button><!-- Del Operator-->
+  </div>
+  </center></li>
+
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#952;</button><!--Delta Operator-->
+  <button type="button" class="btn btn-default symbol">&#960;</button><!--d/dx-->
+  <button type="button" class="btn btn-default symbol">&#937;</button>
+  <button type="button" class="btn btn-default symbol">&#961;</button><!--Implies-->
+  </div></center></li>
+
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default operate">&#8710;</button><!--Delta Operator-->
+  <button type="button" class="btn btn-default symbol">&#8904;</button>
+  <button type="button" class="btn btn-default symbol">&#8658;</button><!--Implies-->
+  <button type="button" class="btn btn-default complex">d|dx</button><!--d/dx-->
+  </div></center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8764;</button>
+  <button type="button" class="btn btn-default symbol">&#8771;</button>
+  <button type="button" class="btn btn-default symbol">&#8773;</button>
+  <button type="button" class="btn btn-default symbol">&#8775;</button>
+  </div>
+  </center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8785;</button>
+  <button type="button" class="btn btn-default symbol">&#8791;</button>
+  <button type="button" class="btn btn-default symbol">&#8804;</button>
+  <button type="button" class="btn btn-default symbol">&#8805;</button>
+  </div>
+  </center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8816;</button>
+  <button type="button" class="btn btn-default symbol">&#8817;</button>
+  <button type="button" class="btn btn-default symbol">&#8946;</button>
+  <button type="button" class="btn btn-default symbol">&#8947;</button>
+  </div>
+  </center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8950;</button>
+  <button type="button" class="btn btn-default operate">&#8853;</button>
+  <button type="button" class="btn btn-default operate">&#8857;</button>
+  <button type="button" class="btn btn-default symbol">&#8805;</button>
+  </div>
+  </center></li>
+  
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default symbol">&#8862;</button>
+  <button type="button" class="btn btn-default symbol">&#8865;</button>
+  <button type="button" class="btn btn-default symbol">&#8870;</button>
+  <button type="button" class="btn btn-default symbol">&#8713;</button>
+  </div>
+  </center></li>
+
+  <li><center>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default">&#8736;</button><!--angle-->
+  <button type="button" class="btn btn-default operate">&#8723;</button><!--plus minus-->
+  <button type="button" class="btn btn-default">&#8741;</button><!-- || -->
+  <button type="button" class="btn btn-default">&#8742;</button><!-- !|| -->
+  </div>
+  </center></li>
+
+  <li><center><p>Vector</p>
+  <div class="btn btn-group" style="margin-top:-11px">
+  <button type="button" class="btn btn-default vector">&rharu;</button>
+  <button type="button" class="btn btn-default vector">&rarr;</button>
+  <button type="button" class="btn btn-default vector">&tilde;</button>
+  <button type="button" class="btn btn-default vector">^</button>
+  </div>
+  </center></li>
+  </ul>
+
+		</div>
+       <div class="modal-body">
+          	<!--<center><textarea style="width:500px;height:150px;overflow:scroll" placeholder="Click add to add new equation"></textarea></center>-->
+          	<center><textarea id="MathInput" onkeyup="Preview.Update()" style="margin-top:5px;width:500px;height:150px;overflow:scroll" placeholder="Please add an Equation using the button to start">
+			</textarea></center>
+        </div>
+		
+		<b style="margin-left:40px">Preview is shown here</b>
+		<div id="MathPreview" style="padding: 3px; min-width:50%; margin-top:5px;"></div>
+		<div id="MathBuffer" style="padding: 3px; min-width:50%; margin-top:5px;visibility:hidden; position:absolute; top:0; left:0"></div>
+		<!--<div style="padding:30px 20px 30px">
+		</div>-->
+		<center><button class="btn btn-default" id="btnright" style="margin-bottom:20px">Click here to avail options</button></center>
+		<div id="slidediv" style="display:none">
+		<center>
+		<button class="btn btn-default" id="anim">Animate</button>
+		<select name="in" id="animSelect">
+    		<option value="flash">flash</option>
+    		<option value="bounce">bounce</option>
+    		<option value="shake">shake</option>
+    		<option value="tada">tada</option>
+    		<option value="swing">swing</option>
+    		<option value="wobble">wobble</option>
+    		<option value="pulse">pulse</option>
+    		<option value="flip">flip</option>
+    		<option value="flipInX">flipInX</option>
+    		<option value="flipInY">flipInY</option>
+    		<option value="fadeIn">fadeIn</option>
+    		<option value="fadeInUp">fadeInUp</option>
+    		<option value="fadeInDown">fadeInDown</option>
+    		<option value="fadeInLeft">fadeInLeft</option>
+    		<option value="fadeInRight">fadeInRight</option>
+    		<option value="fadeInUpBig">fadeInUpBig</option>
+    		<option value="fadeInDownBig">fadeInDownBig</option>
+    		<option value="fadeInLeftBig">fadeInLeftBig</option>
+    		<option value="fadeInRightBig">fadeInRightBig</option>
+    		<option value="bounceIn">bounceIn</option>
+    		<option value="bounceInDown">bounceInDown</option>
+    		<option value="bounceInUp">bounceInUp</option>
+    		<option value="bounceInLeft">bounceInLeft</option>
+    		<option value="bounceInRight">bounceInRight</option>
+    		<option value="rotateIn">rotateIn</option>
+    		<option value="rotateInDownLeft">rotateInDownLeft</option>
+    		<option value="rotateInDownRight">rotateInDownRight</option>
+    		<option value="rotateInUpLeft">rotateInUpLeft</option>
+    		<option value="rotateInUpRight">rotateInUpRight</option>
+    		<option value="rollIn">rollIn</option>
+		</select>&nbsp;&nbsp;
+		<button class="btn btn-default" id="addClass" title="Click to toggle modes">Text Mode</button>
+		</center>
+		<br>
+		<center style="margin-bottom:10px">
+		<input type="color" style="width:12%;margin-left:20px" id="favcolor">
+		<button class="btn btn-default" id="color">Color</button>&nbsp;&nbsp;
+		<input type="checkbox" id="btn-bold" name="radBold"> Bold
+		</center>
+		<center>
+		Equation ClassNames : <select id="EqnClass" style="overflow: scroll;">
+		</select>&nbsp;&nbsp;&nbsp;
+		<div class="btn btn-group">
+		<button class="btn btn-default" id="newEqn">New Eqn</button>
+		<button class="btn btn-default" id="delEqn">Delete Eqn</button>
+		</div>
+		</center>
+		<center>
+		Child ClassNames : <select id="ChildClass" style="overflow: scroll;">
+		</select>&nbsp;&nbsp;&nbsp;
+		<div class="btn btn-group">
+		<button class="btn btn-default" id="newChild">New Child</button>
+		<button class="btn btn-default" id="delChild">Delete Child</button>
+		</div>
+		</center>
+		</div>
+		<div class="modal-footer">
+		<button class="btn btn-primary" id="preview">OK</button>
+         <button class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+</div>
+<!--<canvas id="canv" width="1136px" height="1000px" style="border-style:groove">
+</canvas>
+<div id="div2">
+</div>-->
+<div id="canvas-wrap" >
+	<canvas id="canv" width="1136px" height="1000px">
+	</canvas>
+</div>
+</div>
+</div>
+</div>
+<script>
+//Declaring Global arrays for all three Forms Text/Graphics/Equations
+//CReating groups Arrays
+//Group Object
+var Group = function(groupOrder){
+    this.groupOrder = groupOrder;
+    this.event = "onclick";
+    this.kid = [];
+}
+
+//Group Array and Group Array Size
+//Whenever Grouping is done the group order of each element mut be updated
+var groupArray = [];
+var grArraySize = 0;
+
+//Canvas Offset 
+var canvasOffset = $("#canv").offset();
+//console.log("Hello : "+canvasOffset);
+var canvasX = canvasOffset.left;
+var canvasY = canvasOffset.top;
+</script>
+<script type="text/javascript">
+Preview.Init();
+$(function() {
+$("#btnright").click(function() {
+$('#slidediv').toggle('slide', { direction: 'right' }, 700);
+});
+$("#btnleft").click(function() {
+$('#slidediv').toggle('slide', { direction: 'left' }, 700);
+});
+});
+
+//Equation Object 
+//DeleteEqn will work on both the arrays 
+//DeleteChildClass will work on only one array
+var Equation = function(className,code,animation,outputId,hint){
+  this.id = className;
+  this.code = code;
+  this.animation = animation;
+  this.animOrder = 1;
+  this.groupOrder = -1;
+  this.childArray=[];
+  this.outputId = outputId;
+  this.top = 0;
+  this.left = 0;
+  this.isDeleted = false;
+  //HINTS PART
+  this.smallHint=null;
+}
+
+/*Child Object in Eqn Array
+[{
+  "e1c0":{
+      this.color:"black";
+      this.fontWeight:"none";
+      this.fontStyle:"none";      
+  },
+}]
+*/
+
+var Child=function(className,color,fontWeight,fontStyle){
+  this.className = className;
+  this.fontWeight = fontWeight;
+  this.fontStyle = fontStyle;
+  this.color = color;
+}
+// Opera 8.0+
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+// Firefox 1.0+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
+// Safari 3.0+ "[object HTMLElementConstructor]" 
+var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0 || (function(p) {
+  return p.toString() === "[object SafariRemoteNotification]";
+})(!window['safari'] || safari.pushNotification);
+
+// Internet Explorer 6-11 
+var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+
+// Edge 20+
+var isEdge = !isIE && !!window.StyleMedia;
+
+// Chrome 1+
+var isChrome = !!window.chrome && !!window.chrome.webstore;
+var position = 0;
+
+// text to anser
+//var text = 'Inserted Text';
+var operator = ["+","-","*",".","(",")",",","[","]","=","{","}","?","!","~","^"];
+var math_main_class = [];
+var math_child_class = [];
+var math_indx = -1;
+var MathMode = true;
+var childName = "";
+var eqnId="";
+var selectFlag=0;
+var selectedEquation;
+var selectedIndex;
+
+$(document).ready(function(){
+/* Adding text on click based on browser */
+  $("#MathInput").val("");
+  $("#MathInput").on("keypress", function(event) {
+    var char = event.which || event.keyCode;
+    if(event.ctrlKey){
+      var textCode = $(this).val();
+      textCode = textCode.replace(/(\r\n|\n|\r)/gm,"");
+      console.log(textCode);
+      math_main_class[math_indx].code = textCode;
+      return;
+    }
+    if( event.keyCode >= 37 && event.keyCode <= 40 ) {
+      math_main_class[math_indx].code = $(this).val();
+      return; // arrow keys
+    }
+    if( event.keyCode === 8 || event.keyCode === 46 || event.keyCode==13) {
+      if(event.keyCode == 13 && MathMode){
+        var txt = "<mspace linebreak='newline' />";
+        insertAtCaret('MathInput',txt);
+      }
+      var textCode = $(this).val();
+      textCode = textCode.replace(/(\r\n|\n|\r)/gm,"");
+      math_main_class[math_indx].code = $(this).val();
+      return; // backspace (8) / delete (46)
+    }
+    else if(((char>=48 && char<58) || (char>=65 && char<=90) || (char>=97 && char<=122) ||operator.includes(String.fromCharCode(char))) && MathMode){
+      var str = String.fromCharCode(char);
+      insertAtCaret('MathInput',""+convertCode(str,char));
+      //text = convertCode(str,char);
+      event.preventDefault();
+      // this.value = this.value.substring(0, this.value.length-1);
+    }
+    //Storing the edited Equation
+    var textCode = $(this).val();
+    textCode = textCode.replace(/(\r\n|\n|\r)/gm,"");
+    console.log(textCode);
+    math_main_class[math_indx].code = textCode;
+});
+
+$("#fraction").on("click",function(){
+  var txt = "\n<mfrac>\n<mrow></mrow>\n<mrow></mrow>\n</mfrac>\n";
+  insertAtCaret('MathInput',txt);
+});
+
+$("#power").on("click",function(){
+  var txt = "\n<msup>\n<mrow></mrow>\n<mrow></mrow>\n</msup>\n";
+  insertAtCaret('MathInput',txt);
+});
+
+$("#anim").on("click",function(){
+    var anim = $("#animSelect").val();
+    var c_name = math_main_class[math_indx].id;
+    c_name = "."+c_name;
+    $(c_name).animateCss(anim);
+    math_main_class[math_indx].animation = anim;
+    //console.log(math_main_class[math_indx].animation);
+    //$(".e01").animateCss(anim);
+    //alert(anim);
+});
+var xoff1,yoff1;
+var leffter1=[];
+var topper1=[];
+$("#newEqn").on("click",function(){
+    var c_order = "e"+math_main_class.length;
+    var neq = new Equation(c_order,"<math class='"+c_order+"'>\n</math>","fadeIn","eq"+(math_main_class.length));
+    $("#MathInput").val("<math class='"+c_order+"'>\n</math>");
+    math_main_class.push(neq);
+    math_indx=math_main_class.length-1;
+    //console.log("The outputId is : "+neq.outputId);
+    $("#canvas-wrap").append("<div id='"+neq.outputId+"' class='demo drag draggable ui-widget-content math_equation' style='display:inline-block;border:1px solid black;'></div>");
+    //Making each of the divisions draggable and assigning current positions to the array
+    //Each element will have the final possitions stored
+    var currElem = math_main_class[math_indx];
+    $("#"+neq.outputId).draggable({
+      drag: function(){
+            var offset = $(this).offset();
+            var xPos = offset.left-canvasX;
+            var yPos = offset.top-canvasY;
+            //console.log("Final coords : "+xPos+" "+yPos+" And element :"+neq.outputId);
+            currElem.top = yPos;
+            currElem.left = xPos;
+            //console.log("Final coords : "+xPos+" "+yPos+" And element :"+currElem.className);
+        }
+
+    });
+    $("#"+neq.outputId).click(function(){
+      $( this ).toggleClass("selected");      
+      $(this).draggable( "option", "disabled", true );
+    })
+    .drag("init",function(dd){
+        /*if(flag==1)
+        {
+          id=this.id;
+          console.log("After Deleting the drag has started from :"+id);
+        }*/
+     
+        return $('.selected');        
+    })
+    .drag(function( ev, dd ){
+       //   console.log("drag: "+id);
+        $( this ).css({
+          top: dd.offsetY-Y,
+          left: dd.offsetX-X
+        });
+        
+    });
+    //inserting the equation into the options menu
+    $("#EqnClass").html($("#EqnClass").html()+"<option value='"+c_order+"'>"+c_order+"</option>");
+    $("#currClass").html("Current : <strong>"+c_order+"</strong>");
+    loadChildSelect(neq.childArray);
+});
+
+$('#EqnClass').on('change', function() {
+    var index1 = parseInt($(this).val().substring(1));
+    var sel_eqn = math_main_class[index1];
+    $("#MathInput").val(sel_eqn.code);
+    $("#currClass").html("Current : <strong>"+sel_eqn.id+"</strong>");
+    math_indx = index1;
+    loadChildSelect(sel_eqn.childArray);
+});
+
+$('#newChild').on('click',function(){
+    var parent = math_main_class[math_indx].id;
+    var sel_eqn = math_main_class[math_indx];
+    var childName = parent+"c"+sel_eqn.childArray.length;
+    var childObj = new Child(childName,"#0000ff","none","none");
+    sel_eqn.childArray.push(childObj);
+    //$(".e1c1").css("color","#0000ff");    MathMode = true;
+
+    $("#ChildClass").html($("#ChildClass").html()+"<option value='"+childName+"'>"+childName+"</option>");
+});
+
+$("#addClass").on('click',function(){
+  if(MathMode){
+    $(this).text("Math Mode");
+    MathMode = false;
+  }else{ 
+    $(this).text("Text Mode");
+    MathMode = true;
+  }
+});
+
+$("#color").on('click',function(){
+    var colVal = $("#favcolor").val();
+    var parent = math_main_class[math_indx];
+    childName = $("#ChildClass").val();
+    var child = parent.childArray.find(findChild);
+    try{    MathMode = true;
+
+      child.color = colVal;
+    }catch(e){
+      alert("Please select a ChildClass");
+    }
+    //console.log(child);
+});
+
+$("#btn-bold").on('change',function(){
+    var isBold = false;
+    if($('#btn-bold').is(':checked')) { 
+        isBold = true;
+    }
+    var parent = math_main_class[math_indx];
+    childName = $("#ChildClass").val();
+    var child = parent.childArray.find(findChild);
+    try{
+      child.fontWeight = (isBold)?"bold":"none";
+    }catch(e){
+      alert("Please select a ChildClass");
+    }
+    //console.log(child);
+});
+
+$("#preview").on('click',function(){
+    try{
+    var finalEq = math_main_class[math_indx];
+    var eqname = "."+finalEq.id;
+    var arrayChild = finalEq.childArray;
+    for(var itr=0;itr<arrayChild.length;itr++){
+        var child = arrayChild[itr];
+        var clname = child.className;
+        clname="."+clname;
+        $(clname).css({"color":child.color,"font-weight":child.fontWeight});
+    }
+    $(eqname).animateCss(finalEq.animation);
+    var output = "#"+finalEq.outputId;
+    //$(output).html($("#MathPreview").html());
+    var target = "#";
+    if (!($("#MathPreview").css('visibility') === 'hidden')) {
+        target+="MathPreview";
+    }else target+="MathBuffer";
+    $(output).html($(target).html());
+    //console.log("DONE "+output+" "+target);
+  }catch(e){
+    alert("Please Add Some Equations");
+  }
+});
+
+//Button Functionalities according to the classes
+//symbol class
+$(".symbol").on("click",function(){
+  var txt = "<mi>"+$(this).text()+"</mi>";
+  insertAtCaret('MathInput',txt); 
+});
+//supsub class
+$(".supsub").on("click",function(){
+  var txt = "\n<munderover><mrow><mo>"+$(this).text()+"</mo></mrow>\n<mrow> </mrow>\n<mrow> </mrow>\n</munderover>\n";
+  insertAtCaret('MathInput',txt);
+});
+//operator class
+$(".operate").on("click",function(){
+  var txt = "<mo>"+$(this).text()+"</mo>";
+  insertAtCaret('MathInput',txt); 
+});
+//root Classes
+$(".sqroot").on("click",function(){
+  var txt = "\n<msqrt>\n<mrow></mrow></msqrt>";
+  insertAtCaret('MathInput',txt);
+});
+//curoot
+$(".curoot").on("click",function(){
+  var txt="\n<mroot>\n<mrow> </mrow>\n<mn>3</mn>\n</mroot>\n";
+  insertAtCaret('MathInput',txt);
+}); 
+//n-root class
+$(".nroot").on("click",function(){
+  var txt="\n<mroot>\n<mrow> </mrow>\n<mrow> </mrow>\n</mroot>\n";
+  insertAtCaret('MathInput',txt);
+});
+//vector class
+$(".vector").on("click",function(){
+  var txt = "\n<mover><mrow></mrow><mo>"+$(this).text()+"</mo></mover>\n";
+  insertAtCaret('MathInput',txt);
+});
+//complex class
+$(".complex").on("click",function(){
+  var txt="\n<mfrac><mo>d</mo><mrow><mo>dx</mo></mrow></mfrac>";
+  insertAtCaret('MathInput',txt);
+
+});
+
+$("#delEqn").on("click",function(){
+    var output = "#"+math_main_class[math_indx].outputId;
+    var rm="#EqnClass option[value='"+ math_main_class[math_indx].id +"']";
+    //console.log("While deleting : "+math_indx);
+    //math_main_class.splice(math_indx,1);
+    math_main_class[math_indx].isDeleted = true;
+    $(rm).remove();
+    $(output).remove();
+});
+
+//This is required to insert stuff at the pointer position
+$("#MathInput").on("focusout", function(e) {
+  position = $(this)[0].selectionStart;
+});
+});
+
+$.fn.extend({
+    animateCss: function (animationName) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+        });
+    }
+});
+
+
+function findChild(obj) { 
+    return obj.className === childName;
+}
+
+function loadChildSelect(array){
+    //console.log("called");
+    $("#ChildClass").html("<option value=''></option>");
+    for(var itr=0;itr<array.length;itr++){
+        var c_name = array[itr].className;
+        //console.log("cname = "+c_name);
+        var string = "<option value='"+c_name+"'>"+c_name+"</option>";
+        $("#ChildClass").html($("#ChildClass").html()+string);
+    }
+}
+
+function convertCode(text,code){
+  var txt="";
+  if((code>=65&&code<=90) || (code>=97&&code<=122))
+    txt="<mi>"+text+"</mi>";
+  else if(code>=48 && code<58)
+    txt="<mn>"+text+"</mn>";
+  else if(operator.includes(text))
+    txt="<mo>"+text+"</mo>";
+  return txt;
+}
+
+function insertAtCaret(areaId, text) {
+    var txtarea = document.getElementById(areaId);
+    if (!txtarea) { return; }
+
+    var scrollPos = txtarea.scrollTop;
+    var strPos = 0;
+    var br = ((txtarea.selectionStart || txtarea.selectionStart == '0') ?
+        "ff" : (document.selection ? "ie" : false ) );
+    if (br == "ie") {
+        txtarea.focus();
+        var range = document.selection.createRange();
+        range.moveStart ('character', -txtarea.value.length);
+        strPos = range.text.length;
+    } else if (br == "ff") {
+        strPos = txtarea.selectionStart;
+    }
+
+    var front = (txtarea.value).substring(0, strPos);
+    var back = (txtarea.value).substring(strPos, txtarea.value.length);
+    txtarea.value = front + text + back;
+    strPos = strPos + text.length;
+    if (br == "ie") {
+        txtarea.focus();
+        var ieRange = document.selection.createRange();
+        ieRange.moveStart ('character', -txtarea.value.length);
+        ieRange.moveStart ('character', strPos);
+        ieRange.moveEnd ('character', 0);
+        ieRange.select();
+    } else if (br == "ff") {
+        txtarea.selectionStart = strPos;
+        txtarea.selectionEnd = strPos;
+        txtarea.focus();
+    }
+
+    txtarea.scrollTop = scrollPos;
+}
+
+jQuery(document).on("click", ".math_equation", function (event) {
+      selectedEquation = jQuery(this).attr('id') || '';
+      selectedIndex = selectedEquation.charAt(2);
+      console.log(selectedEquation+ " "+selectedIndex);
+    }
+);
+
+function changeAnimationOrder(){
+    math_main_class[selectedIndex].animOrder = $("#equationAnimationOrder").val();
+    console.log(math_main_class[selectedIndex].animOrder);
+}
+</script>
+
+<div class="hide" id="rmenu">
+            <ul>
+                <li>
+                    <a onclick="Copy()">Copy</a>
+                </li>
+
+                <li>
+                    <a onclick="Paste()">Paste</a>
+                </li>
+            </ul>
+</div>
+
+<script>
+var ref=[];
+//var array=[];
+var clipboard;
+//var arrayIndex=0;
+var objectCounter=-1;
+var canvas = new fabric.Canvas('canv', { selection: true,stopContextMenu:true });
+canvas.upperCanvasEl.addEventListener('contextmenu', function(e) {
+            document.getElementById("rmenu").className = "show"; 
+            document.getElementById("rmenu").style.top =(e.clientY+170) + 'px';
+            document.getElementById("rmenu").style.left =(e.clientX+25) + 'px';
+            //console.log(document.getElementById("rmenu").style.top);
+            e.preventDefault();
+        }, false);
+var shape = null;
+var isDown = false;
+var origX, origY, finX, finY, prev=null;
+var selecting = false;
+var grouping = false;
+var group=[];
+var x1,y1,x2,y2;
+
+canvas.on('mouse:down', function(o){
+  if(shape==null) return;
+    isDown = true;
+    var pointer = canvas.getPointer(o.e);
+    origX = pointer.x;
+    origY = pointer.y;
+});
+
+canvas.on('mouse:move', function(o){
+  if (!isDown) return;
+  var pointer = canvas.getPointer(o.e);
+
+  switch(shape) {
+    case 'circle':
+    var Circ=new fabric.Circle({
+        id:'G'+objectCounter,
+        left: origX,
+        top: origY,
+        radius: Math.abs(origX - pointer.x)/2,
+    right: origX + Math.abs(origX - pointer.x),
+    bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: 2,
+        fill: null,
+        angle:0,
+        stroke: 'black',
+        selectable: true,
+        backgroundColor: 'transparent',
+        originX: 'left', originY: 'top',
+    effect: null,
+        easing: "easeOutElastic",
+      ease_att: 'width',
+      ease_value: 10,
+        delay: 0,
+        duration: 1000,
+        anim_order: 1
+    });
+    if(pointer.x<origX){
+      Circ.set({left: pointer.x});
+    }
+    else{
+      Circ.set({left: origX});
+    }
+    if(pointer.y>origY){
+      Circ.set({top: origY});
+    }
+    else{
+      Circ.set({top: pointer.y});
+    }
+    del(prev);
+    if(prev==null){
+      //console.log(Circ.__uid);
+      ref.push(Circ);
+      objectCounter++;
+    }
+    else{
+      ref[objectCounter-1]=Circ;
+    }
+    //console.log(Circ.__uid);
+    canvas.add(Circ);
+    prev=Circ;
+    break;
+
+  case 'ellipse':
+    var ellip=new fabric.Ellipse({
+      id:'G'+objectCounter,
+        left: origX,
+        top: origY,
+    rx: Math.abs(origX - pointer.x)/2,
+    ry: Math.abs(origY - pointer.y)/2,
+    right: origX + Math.abs(origX - pointer.x),
+    bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: 2,
+        fill: null,
+        angle:0,
+        stroke: 'black',
+        selectable: true,
+        backgroundColor: 'transparent',
+        originX: 'left', originY: 'top',
+    effect: null,
+        easing: "easeOutElastic",
+      ease_att: 'width',
+      ease_value: 10,
+        delay: 0,
+        duration: 1000,
+        anim_order: 1
+    });
+    if(pointer.x<origX){
+      ellip.set({left: pointer.x});
+    }
+    else{
+      ellip.set({left: origX});
+    }
+    if(pointer.y>origY){
+      ellip.set({top: origY});
+    }
+    else{
+      ellip.set({top: pointer.y});
+    }
+    del(prev);
+    if(prev==null){
+      ref.push(ellip);
+      objectCounter++;
+    }
+    else{
+      ref[objectCounter-1]=ellip;
+    }
+    canvas.add(ellip);
+    prev=ellip;
+    break;
+
+
+    case 'rectangle':
+    var Recta=new fabric.Rect({
+        id:'G'+objectCounter,
+        left: origX,
+        top: origY,
+        width: Math.abs(origX - pointer.x),
+        height: Math.abs(origY - pointer.y),
+    right: origX + Math.abs(origX - pointer.x),
+    bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: 2,
+        fill: null,
+        angle:0,
+        stroke: 'black',
+        selectable: true,
+        backgroundColor: 'transparent',
+        originX: 'left', originY: 'top',
+    effect: null,
+        easing: "easeOutElastic",
+      ease_att: 'width',
+      ease_value: 10,
+        delay: 0,
+        duration: 1000,
+        anim_order: 1,
+      drawType:'Q1'
+    });
+    if(pointer.x<origX){
+      Recta.set({left: pointer.x});
+    }
+    else{
+      Recta.set({left: origX});
+    }
+    if(pointer.y>origY){
+      Recta.set({top: origY});
+    }
+    else{
+      Recta.set({top: pointer.y});
+    }
+    del(prev);
+    if(prev==null){
+      ref.push(Recta);
+      objectCounter++;
+    }
+    else{
+      ref[objectCounter-1]=Recta;
+    }
+    canvas.add(Recta);
+    prev=Recta;
+    break;
+
+    case 'triangle':
+    var Tri=new fabric.Triangle({
+        id:'G'+objectCounter,
+        left: origX,
+        top: origY,
+        width: Math.abs(origX - pointer.x),
+        height: Math.abs(origY - pointer.y),
+    right: origX + Math.abs(origX - pointer.x),
+    bottom: origY + Math.abs(origY - pointer.y),
+        angle:0,
+        strokeWidth: 2,
+        fill: null,
+        stroke: 'black',
+        selectable: true,
+        backgroundColor: 'transparent',
+        originX: 'left', originY: 'top',
+    effect: null,
+        easing: "easeOutElastic",
+      ease_att: 'width',
+      ease_value: 10,
+        delay: 0,
+        duration: 1000,
+        anim_order: 1,
+      drawType:'Q1'
+    });
+    if(pointer.x<origX){
+      Tri.set({left: pointer.x});
+    }
+    else{
+      Tri.set({left: origX});
+    }
+    if(pointer.y>origY){
+      Tri.set({top: origY});
+    }
+    else{
+      Tri.set({top: pointer.y});
+    }
+    del(prev);
+    if(prev==null){
+      ref.push(Tri);
+      objectCounter++;
+    }
+    else{
+      ref[objectCounter-1]=Tri;
+    }
+    canvas.add(Tri);
+    prev=Tri;
+    break;
+
+    case 'line':
+    finX=pointer.x;
+    finY=pointer.y;
+    var angg;
+    if(prev==null){
+        angg=0;
+    }
+    else{
+        angg=prev.getAngle();
+    }
+    var line = new fabric.Line([origX, origY, finX, finY], {
+      id:'G'+objectCounter,
+  left:origX,
+  top: origY,
+  right: finX,
+  bottom: finY,
+      angle: angg,
+      length: Math.sqrt((origX-finX)*(origX-finX)+(origY-finY)*(origY-finY)),
+        stroke: 'black',
+        strokeWidth: 2,
+        selectable: true,
+    effect: null,
+        easing: "easeOutElastic",
+      ease_att: 'width',
+      ease_value: 10,
+        delay: 0,
+        duration: 1000,
+        anim_order: 1,
+      drawType: 'Q1'
+      });
+  if(pointer.x<origX){
+      line.set({left: pointer.x});
+    }
+    else{
+      line.set({left: origX});
+    }
+    if(pointer.y>origY){
+      line.set({top: origY});
+    }
+    else{
+      line.set({top: pointer.y});
+    }
+
+  if(origX < finX && origY < finY)line.set({drawType:'Q1'});
+  if(origX > finX && origY < finY)line.set({drawType:'Q2'});
+  if(origX > finX && origY > finY)line.set({drawType:'Q3'});
+  if(origX < finX && origY > finY)line.set({drawType:'Q4'});
+
+    del(prev);
+    if(prev==null){
+      ref.push(line);
+      objectCounter++;
+    }
+    else{
+      ref[objectCounter-1]=line;
+    }
+    canvas.add(line);
+    prev=line;
+    break;
+  }
+  canvas.renderAll();
+});
+
+canvas.on('mouse:up', function(o){
+  for(var i=0;i<objectCounter;i++){
+   // console.log(ref[i].id);
+      if(ref[i].type=='circle'){
+        var off=ref[i].strokeWidth;
+        var radii=((ref[i].getWidth())-off)/2;
+        ref[i].set({scaleX:1});
+        ref[i].set({scaleY:1});
+        var ang=ref[i].getAngle();
+        ref[i].set({angle:ang});
+        ref[i].set({radius:radii});
+ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
+      }
+  else if(ref[i].type == 'ellipse'){
+    var off=ref[i].strokeWidth;
+        var rx_v=((ref[i].getWidth())-off)/2;
+    var ry_v=((ref[i].getHeight())-off)/2;
+        ref[i].set({scaleX:1});
+        ref[i].set({scaleY:1});
+        var ang=ref[i].getAngle();
+        ref[i].set({angle:ang});
+        ref[i].set({rx:rx_v,ry:ry_v});
+
+ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
+
+
+  }
+      else if(ref[i].type =='line'){
+        var wd=ref[i].getWidth();
+        var ht=ref[i].getHeight();
+        var ang=ref[i].getAngle();
+    
+ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
+    
+        ref[i].set({angle:ang});
+        var off=ref[i].strokeWidth;
+        var len=Math.sqrt(wd*wd+ht*ht)-Math.sqrt(off);
+        ref[i].set({length:len});
+      }
+      else{
+        var wd=ref[i].getWidth();
+        var ht=ref[i].getHeight();
+        var ang=ref[i].getAngle();
+
+  ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
+
+
+        ref[i].set({angle:ang});
+        ref[i].set({scaleX:1});
+        ref[i].set({scaleY:1});
+        var off=ref[i].strokeWidth;
+        ref[i].set({width:wd-off});
+        ref[i].set({height:ht-off});
+        //console.log(ref[i].top+" "+ref[i].width+" "+ref[i].height);
+      }
+    }
+  isDown = false;
+  shape=null;
+  prev=null;
+  selectable=true;
+});
+
+function Fill(){
+  var col=document.getElementById("bottle").value;
+  //console.log(col);
+  if(canvas.getActiveObject()){
+    canvas.getActiveObject().set({fill:col});
+  }
+  else if (canvas.getActiveGroup()) {
+            var objectsInGroup = canvas.getActiveGroup().getObjects();
+            canvas.discardActiveGroup();
+            objectsInGroup.forEach(function(object) {
+            object.set({fill:col});
+            });
+  }
+  canvas.renderAll();
+}
+
+function Copy() {
+    // Single Object
+    if(canvas.getActiveObject()) {
+        // Does this object require an async clone?
+        //ref.push(canvas.getActiveObject());
+    //objectCounter++;
+        if(!fabric.util.getKlass(canvas.getActiveObject().type).async) {
+            clipboard = canvas.getActiveObject().clone();
+        } else {
+            canvas.getActiveObject().clone(function(clone) {
+                clipboard= clone;
+            });
+        }
+    }
+
+    // Group of Objects (all groups require async clone)
+    if(canvas.getActiveGroup()) {
+        canvas.getActiveGroup().clone(function(clone) {
+            clipboard = clone;
+        });
+    }
+}
+
+
+function Paste() {
+    // Do we have an object in our clipboard?
+    if(clipboard) {
+        // Lets see if we need to clone async 
+        if(!fabric.util.getKlass(clipboard.type).async) {
+            var obj = clipboard.clone();
+            obj.setTop(obj.top += 10);
+            obj.setLeft(obj.left += 10);            
+            canvas.add(obj);
+            ref.push(obj);//id:'G'+objectCounter,)
+            objectCounter++;
+            ref[objectCounter-1].set({id:'G'+objectCounter});
+            // We do not need to clone async, all groups require async clone
+            canvas.setActiveObject(obj);
+            clipboard = obj;
+        }  else {
+            clipboard.clone(function(clone) {
+                clone.setTop(clone.top += 10);
+                clone.setLeft(clone.left += 10);
+                clone.forEachObject(function(obj){
+                    canvas.add(obj);
+  ref.push(obj);
+  objectCounter++;
+  ref[objectCounter-1].set({id:'G'+objectCounter});
+
+                });
+                
+                canvas.deactivateAll();
+
+                // We need to clone async, but this doesnt mean its a group
+                if(clipboard.isType("group")) {
+                    canvas.setActiveGroup(clone);
+                } else {
+                    canvas.setActiveObject(clone);
+                }
+                clipboard = clone;
+            });
+        }
+    }
+    canvas.renderAll();
+}
+
+function deleteObjects(){
+  var activeObject = canvas.getActiveObject(),
+    activeGroup = canvas.getActiveGroup();
+    if (activeObject) {
+        if (confirm('Are you sure?')) {
+          activeObject.visible=false;
+        }
+    }
+    else if (activeGroup) {
+        if (confirm('Are you sure?')) {
+            var objectsInGroup = activeGroup.getObjects();
+            canvas.discardActiveGroup();
+            objectsInGroup.forEach(function(object) {
+            object.visible=false;
+            });
+        }
+    }
+    canvas.renderAll();
+}
+
+function del(ob){
+  var activeObject = ob;
+    if (activeObject) {
+        canvas.remove(activeObject);
+    }
+}
+
+//ANIMATION SCRIPT START
+function set_effect(effect_g){
+  if(canvas.getActiveObject()){ 
+    canvas.getActiveObject().set({effect:effect_g});
+  }
+}
+
+function set_easing(easing_g){
+  if(canvas.getActiveObject()){ 
+    canvas.getActiveObject().set({easing:easing_g});
+  }
+}
+
+function set_att_ease(easea_g){
+  if(canvas.getActiveObject()){ 
+    canvas.getActiveObject().set({ease_att:easea_g});
+  }
+}
+
+function delay_change_g(){
+  if(canvas.getActiveObject()){ 
+  canvas.getActiveObject().set({delay:parseInt(document.getElementById('delay_g').value)});
+  }
+}
+
+function duration_change_g(){
+  if(canvas.getActiveObject()){ 
+  canvas.getActiveObject().set({duration:parseInt(document.getElementById('duration_g').value)});
+  }
+}
+
+function anim_order_g(){
+  if(canvas.getActiveObject()){ 
+  canvas.getActiveObject().set({anim_order:parseInt(document.getElementById('a_order_g').value)});
+  }
+}
+
+function ease_value_g(){
+  if(canvas.getActiveObject()){ 
+  canvas.getActiveObject().set({ease_value:parseInt(document.getElementById('ease_value_g').value)});
+  }
+}
+
+
+function fade_out_in(obj){
+  obj.setOpacity(1);
+  setTimeout(function(){ obj.animate('opacity', '1', {
+      duration: obj.duration/2,
+      onChange: canvas.renderAll.bind(canvas)
+    })
+  }, obj.duration/2); 
+
+  obj.animate('opacity', '0', {
+      duration: obj.duration/2,
+      onChange: canvas.renderAll.bind(canvas)
+  });
+}
+
+function fade_in(obj){
+  obj.setOpacity(0);  
+  canvas.renderAll();
+  obj.animate('opacity', '1', {
+      duration: obj.duration,
+      onChange: canvas.renderAll.bind(canvas)
+  });
+}
+
+var context = canvas.getContext('2d');
+var startAngle;
+var endAngle;
+var t;
+var flag;
+
+function draw(obj){
+  if(obj.type == 'circle') {draw_circle(obj,'draw');}
+  else if(obj.type == 'ellipse') {draw_ellip(obj,'draw');}
+  else if(obj.type == 'rect') {draw_rect(obj,'draw');}
+  else if(obj.type == 'triangle') {draw_triangle(obj,'draw');}
+  else if(obj.type == 'line') {draw_line(obj,'draw');}
+  else {console.log("No such shape");}
+}
+
+function draw_circle(obj,mode){
+  if(mode == 'draw'){
+    obj.setOpacity(0);
+    canvas.renderAll();
+  }
+  startAngle = 0;
+  endAngle = (2*Math.PI)/360;
+  t = 1;
+  draw_helpc(obj,mode);
+  if(mode == 'draw'){
+    setTimeout(function(){
+        obj.setOpacity(1);
+        canvas.renderAll();
+    } ,obj.duration);
+  } 
+}
+
+function draw_helpc(obj,mode){
+  if(t > 362) return;
+  endAngle=(2*t*Math.PI)/360;
+  context.beginPath();
+  context.arc((obj.left+obj.right)/2,(obj.top+obj.bottom)/2, obj.radius, startAngle, endAngle, false);
+  if(mode == 'draw'){
+    context.lineWidth = obj.strokeWidth;
+    context.strokeStyle = obj.stroke;
+  }
+  else if(mode == 'disa'){
+    context.lineWidth = 2*obj.strokeWidth;
+    context.strokeStyle = 'white';
+  }
+  context.stroke();
+  startAngle = endAngle;
+  t += 2500/obj.duration;
+  setTimeout(draw_helpc,1,obj,mode);
+  
+}
+
+function draw_ellip(obj,mode){
+  if(mode == 'draw'){
+    obj.setOpacity(0);
+    canvas.renderAll();
+  }
+  startAngle = 0;
+  endAngle = (2*Math.PI)/360;
+  t = 1;
+  console.log(obj.angle);
+  draw_helpe(obj,mode);
+  if(mode == 'draw'){
+    setTimeout(function(){
+        obj.setOpacity(1);
+        canvas.renderAll();
+    } ,obj.duration);
+  }
+}
+
+function draw_helpe(obj,mode){
+  if(t > 362) return;
+  endAngle=(2*t*Math.PI)/360;
+  context.beginPath();
+  context.ellipse((obj.left+obj.right)/2, (obj.top+obj.bottom)/2, obj.rx, obj.ry, (obj.angle*Math.PI)/180, startAngle, endAngle, false);
+  if(mode == 'draw'){
+    context.lineWidth = obj.strokeWidth;
+    context.strokeStyle = obj.stroke;
+  }
+  else if(mode == 'disa'){
+    context.lineWidth = 2*obj.strokeWidth;
+    context.strokeStyle = 'white';
+  }
+  context.stroke();
+  startAngle = endAngle;
+  t += 2500/obj.duration;
+  setTimeout(draw_helpe,1,obj,mode);
+  
+}
+
+
+function draw_rect(obj,mode){
+  if(mode == 'draw'){
+    obj.setOpacity(0);
+    canvas.renderAll();
+  } 
+  
+  A = obj.left;
+  B = obj.top;
+  C = obj.oCoords.tr.x;
+  D = obj.oCoords.tr.y;
+
+  draw_helpl(obj,A,B,C,D,obj.width,mode,obj.duration/4);
+
+  setTimeout(function(){
+    A = obj.oCoords.tr.x;
+    B = obj.oCoords.tr.y;
+    C = obj.right;
+    D = obj.bottom;
+    draw_helpl(obj,A,B,C,D,obj.height,mode,obj.duration/4);}, obj.duration/4);
+
+  setTimeout(function(){
+    A = obj.right;
+  B = obj.bottom
+  C = obj.oCoords.bl.x;
+  D = obj.oCoords.bl.y;
+    draw_helpl(obj,A,B,C,D,obj.width,mode,obj.duration/4);}, obj.duration/2);
+
+
+  setTimeout(function(){
+    A = obj.oCoords.bl.x;
+  B = obj.oCoords.bl.y;
+  C = obj.left;
+  D = obj.top;
+    draw_helpl(obj,A,B,C,D,obj.height,mode,obj.duration/4);},3*obj.duration/4);
+  
+
+  if(mode == 'draw'){
+    setTimeout(function(){
+        obj.setOpacity(1);
+        canvas.renderAll();
+    } ,obj.duration);
+  }
+}
+
+function draw_triangle(obj,mode){
+  if(mode == 'draw'){
+    obj.setOpacity(0);
+    canvas.renderAll();
+  }
+  
+  A = (obj.left+obj.oCoords.tr.x)/2;
+  B = (obj.top+obj.oCoords.tr.y)/2;
+  C = obj.right;
+  D = obj.bottom;
+  var w1 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
+  draw_helpl(obj,A,B,C,D,w1,mode,obj.duration/3);
+
+  setTimeout(function(){
+    A = obj.right;
+    B = obj.bottom;
+    C = obj.oCoords.bl.x;
+    D = obj.oCoords.bl.y;
+    var w2 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
+    draw_helpl(obj,A,B,C,D,w2,mode,obj.duration/3);}, obj.duration/3);
+
+  setTimeout(function(){
+    A = obj.oCoords.bl.x;
+  B = obj.oCoords.bl.y;
+  C = (obj.left+obj.oCoords.tr.x)/2;
+  D = (obj.top+obj.oCoords.tr.y)/2;
+  var w3 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
+    draw_helpl(obj,A,B,C,D,w3,mode,obj.duration/3);}, 2*obj.duration/3);
+
+  if(mode == 'draw'){
+    setTimeout(function(){
+        obj.setOpacity(1);
+        canvas.renderAll();
+    } ,obj.duration);
+  }
+
+}
+
+var A;
+var B;
+var C;
+var D;
+
+
+function draw_line(obj,mode){
+  if(mode == 'draw'){
+    obj.setOpacity(0);
+    canvas.renderAll();
+  }
+
+  if(obj.drawType == 'Q1'){
+    A = obj.left;
+    B = obj.top;
+    C = obj.right;
+    D = obj.bottom;
+    draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
+  }
+
+  else if(obj.drawType == 'Q2'){
+    A = obj.oCoords.tr.x;
+    B = obj.oCoords.tr.y;
+    C = obj.oCoords.bl.x;
+    D = obj.oCoords.bl.y;
+    draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
+  }
+
+  else if(obj.drawType == 'Q3'){
+    A = obj.right;
+    B = obj.bottom;
+    C = obj.left;
+    D = obj.top;
+    draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
+  }
+
+  else if(obj.drawType == 'Q4'){
+    C = obj.oCoords.tr.x;
+    D = obj.oCoords.tr.y;
+    A = obj.oCoords.bl.x;
+    B = obj.oCoords.bl.y;
+    draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
+  }
+
+
+  if(mode == 'draw'){
+    setTimeout(function(){
+        obj.setOpacity(1);
+        canvas.renderAll();
+    } ,obj.duration);
+  }
+}
+
+
+function draw_helpl(obj,a,b,c,d,len,mode,time){
+  if(len < Math.sqrt((A-a)*(A-a) + (B-b)*(B-b))) return;
+  context.beginPath();
+  if(mode == 'draw'){
+    context.lineWidth = obj.strokeWidth;
+    context.strokeStyle = obj.stroke;
+  }
+  else if(mode == 'disa'){
+    context.lineWidth = 2*obj.strokeWidth;
+    context.strokeStyle = 'white';
+  }
+  context.moveTo(a,b);
+  
+  b += (D-B)*6/time;
+  a += (C-A)*6/time;
+    
+
+  context.lineTo(a,b);
+  
+  context.stroke();
+  setTimeout(draw_helpl,1,obj,a,b,c,d,len,mode,time);
+}
+
+      
+
+function ease(obj){
+  obj.animate(obj.ease_att, obj.ease_value, {
+    duration: obj.duration,
+    easing: fabric.util.ease[obj.easing],
+    onChange:canvas.renderAll.bind(canvas)
+  });
+}
+
+
+function disappear(obj){
+  if(obj.type == 'circle') {draw_circle(obj,'disa');}
+  else if(obj.type == 'ellipse') {draw_ellip(obj,'disa');}
+  else if(obj.type == 'rect') {draw_rect(obj,'disa');}
+  else if(obj.type == 'triangle') {draw_triangle(obj,'disa');}
+  else if(obj.type == 'line') {draw_line(obj,'disa');}
+  else {console.log("No such shape");}
+}
+
+
+var time_diff;
+
+function show_animation(){
+  time_diff = 0;
+  for(var i = 0 ; i < objectCounter; i++){
+    var obj = ref[i];
+    console.log(obj.type + " " + obj.duration + " " + time_diff);
+    if(!obj.visible) continue;
+    switch(obj.effect){
+      case 'fade in':
+        setTimeout(fade_in,time_diff,obj);
+        break;
+      case 'fade out in':
+        setTimeout(fade_out_in,time_diff,obj);
+        break;
+      case 'draw':
+        setTimeout(draw,time_diff,obj);
+        break;
+      case 'ease':
+        setTimeout(ease,time_diff,obj);
+        break;
+      case 'disappear':
+        setTimeout(disappear,time_diff,obj);
+        break;
+    }
+    var a = parseInt(time_diff);
+    a = a + parseInt(obj.duration);
+    time_diff = a;
+  }
+}
+
+//ANIMATION SCRIPT END
+
+
+</script>
+
+
+<!-- Text-Scripts-->
+
+
+<script>
+var MyArray=[]; //Array to store all text elements
+var id="T0";    //initially id=0;
+var index=0;    //intial index of first element in array is 0;
+//Script to make the default element Drragable 
+//Script to make default element draggable on click and content editable on double click
+  
+var AO,xoff=0,yoff=0,i;
+var lefter=[];
+var topper=[];
+var leff,topp;
+var id,flag=0;
+  var O=$(document.getElementById("canvas-wrap")).offset();
+  var X=O.left;
+  var Y=O.top;
+  
+//Script to get the id and index of current text element that is clicked  
+jQuery(document).on("click", ".demo", function (event) {
+            id = jQuery(this).attr('id') || '';
+            for(var j=0;j<MyArray.length;j++)
+            {
+            if(MyArray[j].id==id){ 
+              index=j;
+              console.log(id+" "+index);
+              break;
+            }
+            }
+//Script to restore the values(delay,duration and animation order) of current text element in the input box
+            //if(T_E==1)
+            //{
+            /*document.getElementById("in_delay").value=MyArray[index].in_delay;
+            document.getElementById("in_duration").value=MyArray[index].in_duration;
+            document.getElementById("in_a_order").value=MyArray[index].animOrder;
+            document.getElementById("out_delay").value=MyArray[index].in_delay;
+            document.getElementById("out_duration").value=MyArray[index].in_duration;
+            document.getElementById("out_a_order").value=MyArray[index].out_order;
+            //HINTS PART
+            document.getElementById("displaySmallHint").innerHTML = MyArray[index].smallHint; 
+            document.getElementById("displayBigHint").innerHTML = MyArray[index].bigHint ;
+            document.getElementById("anchor1").href=MyArray[index].URLs;
+            document.getElementById("anchor1").innerHTML = MyArray[index].URLs;*/ 
+            //document.getElementById("smallHint").innerHTML=MyArray[index].smallHint;
+            //HINTS
+         // }
+          });
+//Script to delete a text element
+        function DeleteDiv()
+    {
+          if(MyArray.length>=0 && document.getElementById(id)!=null)
+            {
+			
+    	  document.getElementById(id).style.visibility="hidden";
+		  MyArray[index].isDeleted=true;
+          //MyArray.splice(index, 1);
+          //document.getElementById(id).remove();
+          }
+          else if(document.getElementById(id)==null && MyArray.length!=0)
+          {
+          alert("Select an element to delete");
+          }
+          else if(MyArray.length==0)
+          {
+          alert("There is no  element that can be  deleted");         
+          }
+          
+    }
+//Script to create a new text element, make it draggable and on double click it should be content editable, giving it default attributes and storing it in the array 
+      var c=0;
+    function NewDiv()
+    { 
+      $("#canvas-wrap").append('<div id="T'+ c +'" name="T'+ c +'" class="demo" contenteditable="true" style="display: inline-block; border:1px solid black;"  class="ui-widget-content draggable,animated,drag"><p>Here is a typical paragraph element</p></div> ');
+            var x=  "#T"+c;    
+      $(x).draggable({ containment: "parent" },
+            {
+      drag: function(){
+            var offset = $(this).offset();
+            var xPos = offset.left;
+            var yPos = offset.top;
+      MyArray[index].xPos=xPos;
+      MyArray[index].yPos=yPos;
+             },
+            })
+      .drag("init",function(dd){
+            /*if(flag==1)
+            {
+              id=this.id;
+              console.log("After Deleting the drag has started from :"+id);
+            }*/
+            id=this.id;
+            if( $( this ).is('.selected') )
+              console.log("init: "+ id);
+              AO=canvas.getActiveObject();
+              AG=canvas.getActiveGroup();
+              var offset=$(this).offset();
+              left=offset.left;
+              topp=offset.top;
+              if(AO && this.id==id &&  $( this ).is('.selected'))      
+              {
+               
+                xoff=AO.getLeft()-left;
+                yoff=AO.getTop()-topp;
+                console.log("id matched for init is "+id);
+              }
+              else if(AG  && this.id==id && $( this ).is('.selected'))
+                {
+                 
+                 lefter = [];
+                 topper = [];
+                 var objects=AG.getObjects();
+                 objects.forEach(function(object){
+                 lefter.push(object.getLeft()-left);
+                 topper.push(object.getTop()-topp);
+                 });
+                }
+            return $('.selected');        
+        })
+        .drag(function( ev, dd ){
+           //   console.log("drag: "+id);
+            $( this ).css({
+              top: dd.offsetY-Y,
+              left: dd.offsetX-X
+            });
+            if(AO && this.id==id && $(this).hasClass("selected")) 
+            {
+              
+              var a=(dd.offsetY+yoff);
+              var b=(dd.offsetX+xoff);
+              AO.set({top:a,left:b});
+              AO.setCoords();
+              canvas.renderAll();
+              console.log("id matched for drag is "+id);
+            }
+            else if(AG && this.id==id && $(this).hasClass("selected"))
+            {
+              
+                 var objects=AG.getObjects();
+                 i=0;
+                 objects.forEach(function(object){
+                 object.set({top:dd.offsetY+topper[i],left:dd.offsetX+lefter[i]});
+                 object.setCoords();
+                 i++;
+                 canvas.renderAll();
+                 });           
+            }
+        })
+		
+				.drag("end",function(ev,dd)
+				{
+				    for(var k=0;k<MyArray.length;k++)
+						{
+						  if($( document.getElementById(MyArray[k].id)).is('.selected'))
+						   {
+						     var offset = $(document.getElementById(MyArray[k].id)).offset();
+							 var xPos = offset.left;
+							 var yPos = offset.top;
+						     MyArray[k].xPos=xPos;
+					   	     MyArray[k].yPos=yPos;
+					//	     console.log("index: "+k+"Xpos: "+MyArray[k].xPos+"Ypos: "+MyArray[k].xPos);
+						   }
+						}
+				});
+      var s=document.getElementById(id).innerHTML;
+      var i="flash";
+      var o="flash";
+      var offset=document.getElementById(id);
+      var l=offset.offsetLeft;
+      var t=offset.offsetTop;
+      MyArray.push({id:"T"+c,Data:s,in_anim:i,out_anim:o,xPos:l,yPos:t,in_delay:"2",out_delay:"2",in_duration:"3000",out_duration:"3000",animOrder:"1",out_order:"1"});
+      $(document.getElementById("#"+x)).attr( 'contenteditable', true );
+	  CKEDITOR.inline( "T"+c,{});
+	  c++;
+    
+    function singleClick(e) {
+     
+           $( this ).toggleClass("selected");
+            
+                   $(this).draggable( "option", "disabled", true );
+                 $(this).attr('contenteditable','true');
+    }
+      function doubleClick(e)
+      {
+        //console.log("double click");
+        this.focus();
+        $(x).prop('contentEditable',true);
+          MyArray[index].Data=this.innerHTML;
+      }
+      $(x).click(function(e) 
+      {
+        var that = this;
+        setTimeout(function() 
+        {
+         var dblclick = parseInt($(that).data('double'), 10);
+         if (dblclick > 0) 
+            {
+               $(that).data('double', dblclick-1);
+          }
+           else 
+             {
+            singleClick.call(that, e);
+          }
+        }, 300);
+      })
+      .dblclick(function(e)
+      {
+        $(this).data('double', 2);
+        doubleClick.call(this, e);
+      });
+    }
+          
+//Script to give in animation
+    function in_anim(value)
+    {
+        MyArray[index].animOrder=value;
+    }
+//Script to make out animation
+    function out_anim(value)
+    {
+        MyArray[index].out_anim=value;
+    }
+//Script to give in delay
+    function in_delay_change()
+    {
+         var v1=document.getElementById("in_delay").value;
+         if(v1!=null && v1!="")
+         {
+           $("#"+id).css({"-webkit-animation-duration": v1+'s'});
+         $("#"+id).css({"-moz-animation-duration": v1+'s'});
+         $("#"+id).css({"animation-duration": v1+'s'});
+         MyArray[index].delay=v1;
+         }
+    }
+//Script to give delay
+    function out_delay_change()
+    {
+         var v1=document.getElementById("out_delay").value;
+         if(v1!=null && v1!="")
+         {
+           $("#"+id).css({"-webkit-animation-duration": v1+'s'});
+         $("#"+id).css({"-moz-animation-duration": v1+'s'});
+         $("#"+id).css({"animation-duration": v1+'s'});
+         MyArray[index].delay=v1;
+         }
+    }
+//Script to give in duration
+    function in_duration_change()
+    {
+         var v2=document.getElementById("in_duration").value;
+         MyArray[index].in_duration=v2;
+    } 
+//Script to give out duration
+    function out_duration_change()
+    {
+         var v2=document.getElementById("out_duration").value;
+         MyArray[index].out_duration=v2;
+    }
+//Script to give in animmation order
+    function in_anim_order(){    
+        MyArray[index].animOrder=document.getElementById("in_a_order").value;
+    }
+    
+//Script to give out animmation order
+    function out_anim_order(){
+        MyArray[index].out_order=document.getElementById("out_a_order").value;
+    }
+//Script to extend the animation function
+    $.fn.extend({
+        animateCss: function (animationName) {
+          var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+            this.addClass('animated ' + animationName).one(animationEnd, function() {
+              $(this).removeClass('animated ' + animationName);
+            });
+          }
+    });
+//Script to show animation    
+    function f1()
+    {
+        for(var x=0;x<MyArray.length;x++)
+        {
+        var element=document.getElementById(MyArray[x].id);
+        var e1 = MyArray[index].in_anim;
+        var e2 = MyArray[index].out_anim;
+        var t=MyArray[index].in_duration;
+        $(element).animateCss(""+e1);
+        setTimeout(function() {
+          $(element).animateCss(""+e2)
+        },t);
+                }
+    }
+//Script to create CSV
+    function f8()
+      {
+      var str=[];
+      for(var n=0;n<MyArray.length;n++)
+      {var final_string=JSON.stringify(MyArray[n]);
+      str.push(final_string);
+      }
+      exportToCsv("final-file.csv",str);
+    }
+    function exportToCsv(filename, rows)
+    {
+         var processRow = function (row) {
+        var finalVal = '';
+        finalVal+=row;
+          return finalVal + '\n';
+        };
+        var csvFile = '';
+        for (var i = 0; i < rows.length; i++) {
+          csvFile += processRow(rows[i]);
+        }
+        var blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
+        if (navigator.msSaveBlob) { // IE 10+
+          navigator.msSaveBlob(blob, filename);
+        } else {
+          var link = document.createElement("a");
+          if (link.download !== undefined) {
+            var url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", filename);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        }
+    } 	 	
+</script>
+<script>
+var playItr = 0;
+/*$(window).on("click",function(e){
+  //console.log(e.target);
+  try{
+    var elm = e.target;  
+    var myClass = elm.className;
+    var par = $(elm).closest(".demo");
+    //console.log(myClass.indexOf("demo"));
+    //console.log($(elm).parents('div').last().attr('class'));
+    //console.log($(elm).closest(".demo"));
+    if(myClass.indexOf("demo")!=-1 || par!=null){
+        $(".demo").css("border-style","solid");
+        if(par!=null){
+            $(par).css("border-style","dashed");
+        }else
+            $(elm).css("border-style","dashed");   
+    }else{
+        $(".demo").css("border-style","solid");
+    }
+  }catch(e){console.log("Couldnt find className");}
+});*/
+
+//Creating the Final Animation Yeah!!!!!!
+function playAnimation(){
+    //Sort According to the group Order
+    //Write the function for the superArray
+    /*groupArray.sort(function(obj1,obj2){
+        //Write Code here
+    });*/
+    //Write now it is a simple loop just ploughing through the array and animating each objeect as and where it comes
+    var list = groupArray[playItr].kid;
+    for(var i=0;i<list.length;i++){
+        var el = list[i];
+        //Check the FIRST CHARACTERS OF YOUR ID and all the fields
+          if(el.id[0] == 'e'){
+              var ai;
+              //console.log("Eq = "+JSON.stringify(el));
+              for(ai=0;ai<math_main_class.length;ai++){
+                  if(math_main_class[ai].id === el.id){
+                      break;
+                  }
+              }
+              console.log("Eq after b= "+ai+" "+math_main_class.length+" "+math_main_class[ai]);
+              var pl_elem = math_main_class[ai];
+              var anm = pl_elem.animation;
+              var cl = "#"+pl_elem.outputId;
+              console.log("animation = "+anm+" cl = "+cl);
+              $(cl).animateCss(anm);
+          }else if(el.id[0]=='T'){
+              var ai;
+              console.log("Eq = "+JSON.stringify(el));
+              for(ai=0;ai<MyArray.length;ai++){
+                  if(MyArray[ai].id === el.id){
+                      break;
+                  }
+              }
+              var pl_elem = MyArray[ai];
+              var anm = pl_elem.in_anim;
+              var cl = "#"+pl_elem.id;
+              console.log("animation = "+anm+" cl = "+cl);
+              $(cl).animateCss(anm);
+          }else{
+              //Add Graphics Animation
+              
+
+          }
+    }
+    //console.log(list);
+    playItr++;
+    if(playItr == groupArray.length)
+      playItr=0;
+}
+
+
+//DataBase actions taken here
+//All data sent to the dataBase as JSON
+function queryDataBase(){
+    var superArray = MyArray.concat(math_main_class);
+    superArray = superArray.concat(ref);
+    var defaultGroup = new Group(-1);
+    defaultGroup.event = "onclick";
+    for(var itr=0;itr<superArray.length;itr++){
+        if(superArray[itr].groupOrder == -1){
+            defaultGroup.kid.push(superArray[itr]);
+        }
+    }
+    groupArray.shift(defaultGroup);
+    var graphicsObject=[];
+    for (var i=0;i<ref.length;i++)
+    {
+        //console.log(ref[i].id);
+        graphicsObject.push({
+            id:ref[i].id,
+            object:ref[i],
+            right:ref[i].right,
+            bottom:ref[i].bottom,
+            effect:ref[i].effect,
+            easing: ref[i].easing,
+            ease_att: ref[i].ease_att,
+            ease_value: ref[i].ease_value,
+            delay: ref[i].delay,
+            duration: ref[i].duration,
+            anim_order: ref[i].anim_order,
+            drawType:ref[i].drawType
+        });
+    }
+    //console
+    //console.log(graphicsObject[0].id);
+    var activity={
+      name:"activity1",
+      topic:"topic1",
+      text:MyArray,
+      equation:math_main_class,
+      graphics:graphicsObject,
+      group:groupArray
+    };
+
+    json=JSON.stringify(activity);
+    console.log(json);//.graphics.id);
+}
+
+</script>
+<script>
+function Create_Group(){
+  var groupKid=[];
+  //var TEArray = MyArray.concat(math_main_class); 
+  for(var k=0;k<MyArray.length;k++){
+    var element=document.getElementById(MyArray[k].id);
+    console.log("Element"+element);
+    if($(element).hasClass("selected")){
+       groupKid.push({id:MyArray[k].id,order:MyArray[k].animOrder});
+     }
+  }
+  for(var k=0;k<math_main_class.length;k++){
+    var element=document.getElementById(math_main_class[k].outputId);
+    console.log("Element"+element);
+    if($(element).hasClass("selected")){
+       groupKid.push({id:math_main_class[k].id,order:math_main_class[k].animOrder});
+     }
+  }
+  AO=canvas.getActiveObject();
+  if(AO){
+    //groupKid.push(AO);
+    groupKid.push({
+            id:AO.id,
+            order:AO.anim_order
+            /*object:AO,
+            right:AO.right,
+            bottom:AO.bottom,
+            effect:AO.effect,
+            easing: AO.easing,
+            ease_att: AO.ease_att,
+            ease_value: AO.ease_value,
+            delay: AO.delay,
+            duration: AO.duration,
+            anim_order: AO.anim_order,
+            drawType:AO.drawType*/});
+  }
+ // console.log(groupKid[0].id);
+  AG=canvas.getActiveGroup();
+  if(AG){
+    var objects=AG.getObjects();
+    objects.forEach(function(object){
+        //groupKid.push(object);
+        groupKid.push({
+            id:object.id,
+            order:AO.anim_order
+            /*object:object,
+            right:object.right,
+            bottom:object.bottom,
+            effect:object.effect,
+            easing: object.easing,
+            ease_att: object.ease_att,
+            ease_value: object.ease_value,
+            delay: object.delay,
+            duration: object.duration,
+            anim_order: object.anim_order,
+            drawType:object.drawType*/});
+
+              });
+    //});
+    //console.log(groupKid[0].id);
+    //console.log(groupKid[1].id);
+    //console.log(groupKid[2].id);
+
+  }
+
+  var myGroup = new Group(grArraySize);
+  myGroup.kid = groupKid;
+  groupArray.push(myGroup);
+  grArraySize++;
+  console.log("Group Created");
+  console.log(JSON.stringify(groupArray));
+}
+</script>
+</body>
+</html>
