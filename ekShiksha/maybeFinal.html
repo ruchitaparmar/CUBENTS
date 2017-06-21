@@ -19,14 +19,14 @@
 <script src="http://threedubmedia.com/inc/js/jquery.event.drop.live-2.2.js"></script>
 <script src="http://threedubmedia.com/inc/js/excanvas.min.js"></script>
 <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
-<link rel="stylesheet" href="js/animate.css">
-<script src="MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
+<link rel="stylesheet" href="./animate.css">
+<script src="js/MathJax-master/MathJax.js?config=TeX-MML-AM_HTMLorMML"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.js"></script>
 <script src="https://cdn.ckeditor.com/4.7.0/full/ckeditor.js"></script>
 <style>
 
 body{
-  background:url("bkg2.jpg");
+  background:url("images.png");
 }
 .sidenav {
     height: 100%;
@@ -2555,39 +2555,47 @@ function playAnimation(){
         //Write Code here
     });*/
     //Write now it is a simple loop just ploughing through the array and animating each objeect as and where it comes
-    var list = groupArray[itr].kid;
+    var list = groupArray[playItr].kid;
     for(var i=0;i<list.length;i++){
         var el = list[i];
         //Check the FIRST CHARACTERS OF YOUR ID and all the fields
-        setTimeout(function(){
           if(el.id[0] == 'e'){
               var ai;
+              //console.log("Eq = "+JSON.stringify(el));
               for(ai=0;ai<math_main_class.length;ai++){
-                  if(math_main_class.id === el.id){
+                  if(math_main_class[ai].id === el.id){
                       break;
                   }
               }
+              console.log("Eq after b= "+ai+" "+math_main_class.length+" "+math_main_class[ai]);
               var pl_elem = math_main_class[ai];
               var anm = pl_elem.animation;
               var cl = "#"+pl_elem.outputId;
+              console.log("animation = "+anm+" cl = "+cl);
               $(cl).animateCss(anm);
           }else if(el.id[0]=='T'){
               var ai;
+              console.log("Eq = "+JSON.stringify(el));
               for(ai=0;ai<MyArray.length;ai++){
-                  if(MyArray.id === el.id){
+                  if(MyArray[ai].id === el.id){
                       break;
                   }
               }
               var pl_elem = MyArray[ai];
               var anm = pl_elem.in_anim;
-              var cl = pl_elem.id;
+              var cl = "#"+pl_elem.id;
+              console.log("animation = "+anm+" cl = "+cl);
               $(cl).animateCss(anm);
           }else{
               //Add Graphics Animation
+              
+
           }
-        },3000);
     }
     //console.log(list);
+    playItr++;
+    if(playItr == groupArray.length)
+      playItr=0;
 }
 
 
