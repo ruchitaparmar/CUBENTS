@@ -160,7 +160,7 @@ border-style:groove;
   to { opacity: 0; }
 }
 .type{
-  color: lime; 
+  color: black; 
   font-family: "Courier";
   margin: 10px 0 0 10px;
   white-space: nowrap;
@@ -399,8 +399,6 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     Animation order
     <input type="text" style="width:40px" id="in_a_order" onchange="in_anim_order()">&nbsp;
     <br><br>
-    Animation order
-    <input type="text" style="width:40px" id="out_a_order" onchange="out_anim_order()">&nbsp;
     </center>
     <button class="btn btn-primary" data-dismiss="modal" onclick="f1();">Show Text Animation</button>
     </div>
@@ -2828,65 +2826,53 @@ var time;
 function playAnimation(){
     //Write now it is a simple loop just ploughing through the array and animating each objeect as and where it comes
     var list = groupArray[playItr].kid;
+    list.sort(function(a,b){ return a.order-b.order });
+    console.log("sorted list v: "+ list); 
+    var kidLength = list.length;
     time=0;
-    for(var i=0;i<list.length;i++){
-        var el = list[i];
-        setTimeout(animateObject,time,el);
-        //alert("Animation complete");
-        
-
-    }
-    //console.log(list);
+    var groupItr = 0;
+    setTimeout(function(){animateObject(list,list[groupItr],groupItr,kidLength);},time);
+    console.log("Animation Completed");
     playItr++;
     if(playItr == groupArray.length)
       playItr=0;
 }
 
-function animateObject(obj)
-{
+function animateObject(list,obj,groupItr,kidLength){
+    if(groupItr === kidLength)
+      return;
     var elem;
-
     var i;
-
+    console.log(obj.id+" "+time);
     if(obj.id[0]=='e'){
-
       for(i=0;i<math_main_class.length;i++){
-
         if(math_main_class[i].id==obj.id){
           elem=math_main_class[i];
           break;
         }
       }
-
       var animation_name=obj.animation;
+      //console.log(animation_name);
       $("#"+elem.outputId).animateCss(animation_name);
-      time+=2000;
-
+      time=1000;
     }
-
     else if(obj.id[0]=='T'){
-
       for(i=0;i<MyArray.length;i++){
-
         if(MyArray[i].id==obj.id){
           elem=MyArray[i];
           break;
         }
       }
-
-      var animaiton_name=obj.in_anim;
+      var animation_name=obj.animation;
+      //console.log(animation_name);
       $("#"+elem.id).animateCss(animation_name);
-      time+=2000;
-
+      time=1000;
     }
-
     else{
-
       for(i=0;i<ref.length;i++){
         if(ref[i].id==obj.id)
           break;
       }
-
       elem=ref[i];
       switch(elem.effect){
         case 'fade out in':
@@ -2900,13 +2886,13 @@ function animateObject(obj)
         case 'fade_in':
         fade_in(elem);
       }
-
-      time+=obj.duration;
-
+      time=elem.duration;
     }
-
-
+    groupItr++;
+    //console.log("Time = "+time);
+    setTimeout(function(){animateObject(list,list[groupItr],groupItr,kidLength);},time);
 }
+
 //DataBase actions taken here
 //All data sent to the dataBase as JSON
 function queryDataBase(){
@@ -2921,7 +2907,6 @@ function queryDataBase(){
     json=JSON.stringify(activity);
     console.log(json);
 }
-
 </script>
 <script>
 function Create_Group(){
