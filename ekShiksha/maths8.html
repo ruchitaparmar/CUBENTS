@@ -3160,20 +3160,25 @@ function animateObject(list,obj,groupItr,kidLength){
       elem=ref[i];
       switch(elem.effect){
         case 'fade out in':
-        //console.log("FADE OUT IN"+"  "+elem.type);
         fade_out_in(elem);
         break;
         case 'draw':
-        console.log("Draw");
         draw(elem);
         break;
         case 'fade_in':
         fade_in(elem);
+	break;
+	case 'ease':
+        ease(elem);
+	break;
+	case 'disappear':
+        disappear(elem);
+	break;
+	
       }
       time=elem.duration;
     }
     groupItr++;
-    //console.log("Time = "+time);
     setTimeout(function(){animateObject(list,list[groupItr],groupItr,kidLength);},time);
 }
 
