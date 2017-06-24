@@ -90,6 +90,7 @@ border-radius:3px 3px 0 0;
 min-height:25px;
 padding:5px 0;
 margin-top:-20px;
+text-align:center;
 }
 button[type="button"]{
 width:30px;
@@ -172,6 +173,20 @@ border-style:groove;
 @keyframes type{ 
   from { width: 0;} 
 }
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+ }
+ .line{
+ content:url(straight.png);
+ width:30px;
+ height:20px;
+ }
+ .dotline{
+ content:url(dotted.png);
+ width:30px;
+ height:20px;
+ }
 </style>
 <script>
 function openNav() {
@@ -505,7 +520,7 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     </center>
     </div>
    
-   <div id="menu3" class="tab-pane fade in active">
+   <div id="menu3" class="tab-pane fade">
     <center>
     <!--Change Made by A--> 
       Animation Order:<input id="equationAnimationOrder" onchange="changeAnimationOrder()">
@@ -567,6 +582,7 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
 <div class="btn btn-group">
 <button class="btn btn-default" data-toggle="dropdown" title="Insert shapes" onclick="" value="2" style="margin-left:-10px">Shapes
     <span class="caret"></span></button>
+	<button class="btn btn-default" id="linetype" title="Choose stroke type"><div class="line"></div></button>
     <ul class="dropdown-menu" style="width:200px">
  <li> <center><div class="btn btn-group">
 
@@ -586,8 +602,30 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
 
 <li> <center><div class="btn btn-group" style="margin-top:-12px">
 <input type="color" id="bottle" style="font-size:15pt">
-<button onclick="Fill()">Fill</button>
+<button onclick="Fill()">Fill</button><br><br>
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">Size
+    <span class="caret"></span></button>
+	
+    <ul class="dropdown-menu">
+      <li><a href="#">1px</a></li>
+      <li><a href="#">2px</a></li>
+      <li><a href="#">4px</a></li>
+      <li><a href="#">6px</a></li>
+      <li><a href="#">8px</a></li>
+      <li><a href="#">10px</a></li>
+    </ul>
+	
+  </div>
 </div>
+<script>
+$("#linetype").click(function(){
+    $(".line").toggleClass("dotline");
+});
+</script>
+
+
+
 </center>
 </li>
 
@@ -942,7 +980,7 @@ function URLs()
     <div id="MathBuffer" style="margin-left:40px;padding: 3px; min-width:50%; margin-top:5px;visibility:hidden; position:absolute; top:0; left:0;overflow:scroll;"></div>
     <!--<div style="padding:30px 20px 30px">
     </div>-->
-    <center><button class="btn btn-default" id="btnright" style="margin-bottom:20px">Click here to avail options</button></center>
+    <center><button class="btn btn-default" id="btnright" style="margin-bottom:20px;margin-top:20px">Click here to avail options</button></center>
     <div id="slidediv" style="display:none">
     <center>
     <button class="btn btn-default" id="addClass" title="Click to toggle modes">Text Mode</button>
@@ -1593,8 +1631,8 @@ var T_E=-1;
 //Change made by A
 jQuery(document).on("click", ".math_equation", function (event) {
     T_E=0;
-	  console.log(T_E);
-	  selectedEquation = jQuery(this).attr('id') || '';
+    console.log(T_E);
+    selectedEquation = jQuery(this).attr('id') || '';
     selectedIndex = selectedEquation.charAt(2);
     math_indx = parseInt(selectedIndex);
     console.log(selectedEquation+ " "+selectedIndex+" "+math_indx);
@@ -3017,8 +3055,8 @@ var id,flag=0;
                        { index=j;
                    break;}
                  }
-				 T_E=1;
-				 // console.log(T_E);
+         T_E=1;
+         // console.log(T_E);
             document.getElementById("displaySmallHint").innerHTML = MyArray[index].smallHint; 
             document.getElementById("displayBigHint").innerHTML = MyArray[index].bigHint ;
             document.getElementById("anchor1").href=MyArray[index].URLs;
@@ -3166,14 +3204,14 @@ function animateObject(list,obj,groupItr,kidLength){
         break;
         case 'fade_in':
         fade_in(elem);
-	break;
-	case 'ease':
+  break;
+  case 'ease':
         ease(elem);
-	break;
-	case 'disappear':
+  break;
+  case 'disappear':
         disappear(elem);
-	break;
-	
+  break;
+  
       }
       time=elem.duration;
     }
@@ -3626,16 +3664,16 @@ function Copy1()
    if(AG==null && AO==null)
    {
       if(T_E==1)
-	  {
-	  tdata=document.getElementById(id).innerHTML;
-	  }
-	  else
-	  {
-	  var copyIndex = parseInt(selectedIndex);
-	  var eqObj = math_main_class[copyIndex];
-	  console.log(copyIndex+" "+eqObj);
-	  copyEquation(eqObj);
-	  }
+    {
+    tdata=document.getElementById(id).innerHTML;
+    }
+    else
+    {
+    var copyIndex = parseInt(selectedIndex);
+    var eqObj = math_main_class[copyIndex];
+    console.log(copyIndex+" "+eqObj);
+    copyEquation(eqObj);
+    }
    }
    else //Graphics
    {
@@ -3649,15 +3687,15 @@ function Paste1()
    if(AG==null && AO==null)
    {
       if(T_E==1)
-	  {
-	  NewDiv();
-	  }
-	  else if(T_E==0)
-	  {
+    {
+    NewDiv();
+    }
+    else if(T_E==0)
+    {
 
     console.log("Paste called for eqtn");
-	  pasteEquation();
-	  }
+    pasteEquation();
+    }
    }
    else //Graphics
    {
