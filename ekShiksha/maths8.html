@@ -608,12 +608,12 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <span class="caret"></span></button>
 	
     <ul class="dropdown-menu">
-      <li><a href="#">1px</a></li>
-      <li><a href="#">2px</a></li>
-      <li><a href="#">4px</a></li>
-      <li><a href="#">6px</a></li>
-      <li><a href="#">8px</a></li>
-      <li><a href="#">10px</a></li>
+      <li><a href="#" onclick="strokewidth=1">1px</a></li>
+      <li><a href="#" onclick="strokewidth=2">2px</a></li>
+      <li><a href="#" onclick="strokewidth=4">4px</a></li>
+      <li><a href="#" onclick="strokewidth=6">6px</a></li>
+      <li><a href="#" onclick="strokewidth=8">8px</a></li>
+      <li><a href="#" onclick="strokewidth=10">10px</a></li>
     </ul>
 	
   </div>
@@ -621,6 +621,13 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
 <script>
 $("#linetype").click(function(){
     $(".line").toggleClass("dotline");
+    if(coun%2==0){
+      strokearray=[10,5];
+    }
+    else{
+      strokearray=null;
+    }
+    coun++;
 });
 </script>
 
@@ -1695,7 +1702,7 @@ function pasteEquation(){
 }
 </script>
 
-<div class="hide" id="rmenu">
+<!--div class="hide" id="rmenu"> //Context Menu functions(currently not used)
             <ul>
                 <li>
                     <a onclick="Copy()">Copy</a>
@@ -1705,14 +1712,16 @@ function pasteEquation(){
                     <a onclick="Paste()">Paste</a>
                 </li>
             </ul>
-</div>
+</div-->
 
 <script>
+//Graphics Script
+var coun=0;
 var ref=[];
-//var array=[];
 var clipboard;
-//var arrayIndex=0;
 var objectCounter=0;
+var strokewidth=1;
+var strokearray=null;
 var canvas = new fabric.Canvas('canv', { selection: true,stopContextMenu:true });
 var shape = null;
 var isDown = false;
@@ -1721,6 +1730,7 @@ var selecting = false;
 var grouping = false;
 var group=[];
 var x1,y1,x2,y2;
+var first = 1;
 
 canvas.on('mouse:down', function(o){
   if(shape==null) return;
@@ -1741,19 +1751,20 @@ canvas.on('mouse:move', function(o){
         left: origX,
         top: origY,
         radius: Math.abs(origX - pointer.x)/2,
-    right: origX + Math.abs(origX - pointer.x),
-    bottom: origY + Math.abs(origY - pointer.y),
-        strokeWidth: 2,
+        right: origX + Math.abs(origX - pointer.x),
+        bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: strokewidth,
+        strokeDashArray: strokearray,
         fill: null,
         angle:0,
         stroke: 'black',
         selectable: true,
         backgroundColor: 'transparent',
         originX: 'left', originY: 'top',
-    effect: null,
+        effect: null,
         easing: "easeOutElastic",
-      ease_att: 'width',
-      ease_value: 10,
+        ease_att: 'width',
+        ease_value: 10,
         duration: 1000,
         anim_order: 1
     });
@@ -1771,14 +1782,12 @@ canvas.on('mouse:move', function(o){
     }
     del(prev);
     if(prev==null){
-      //console.log(Circ.__uid);
       ref.push(Circ);
       objectCounter++;
     }
     else{
       ref[objectCounter-1]=Circ;
     }
-    //console.log(Circ.__uid);
     canvas.add(Circ);
     prev=Circ;
     break;
@@ -1788,21 +1797,22 @@ canvas.on('mouse:move', function(o){
       id:'G'+objectCounter,
         left: origX,
         top: origY,
-    rx: Math.abs(origX - pointer.x)/2,
-    ry: Math.abs(origY - pointer.y)/2,
-    right: origX + Math.abs(origX - pointer.x),
-    bottom: origY + Math.abs(origY - pointer.y),
-        strokeWidth: 2,
+        rx: Math.abs(origX - pointer.x)/2,
+        ry: Math.abs(origY - pointer.y)/2,
+        right: origX + Math.abs(origX - pointer.x),
+        bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: strokewidth,
+        strokeDashArray: strokearray,
         fill: null,
         angle:0,
         stroke: 'black',
         selectable: true,
         backgroundColor: 'transparent',
         originX: 'left', originY: 'top',
-    effect: null,
+        effect: null,
         easing: "easeOutElastic",
-      ease_att: 'width',
-      ease_value: 10,
+        ease_att: 'width',
+        ease_value: 10,
         duration: 1000,
         anim_order: 1
     });
@@ -1838,20 +1848,21 @@ canvas.on('mouse:move', function(o){
         top: origY,
         width: Math.abs(origX - pointer.x),
         height: Math.abs(origY - pointer.y),
-    right: origX + Math.abs(origX - pointer.x),
-    bottom: origY + Math.abs(origY - pointer.y),
-        strokeWidth: 2,
+        right: origX + Math.abs(origX - pointer.x),
+        bottom: origY + Math.abs(origY - pointer.y),
+        strokeWidth: strokewidth,
+        strokeDashArray: strokearray,
         fill: null,
         angle:0,
         stroke: 'black',
         selectable: true,
         backgroundColor: 'transparent',
         originX: 'left', originY: 'top',
-    effect: null,
+        effect: null,
         easing: "easeOutElastic",
-      ease_att: 'width',
-      ease_value: 10,
-        duration: 1000,
+        ease_att: 'width',
+        ease_value: 10,
+        duration: 3000,
         anim_order: 1,
       drawType:'Q1'
     });
@@ -1879,23 +1890,6 @@ canvas.on('mouse:move', function(o){
     prev=Recta;
     break;
 
-    /*case 'arrow':
-    var imgElement = document.getElementById('my-image');
-    element= new fabric.Image(imgElement, {
-      left: pointer.x,
-      top: pointer.y,
-      width: 70,
-      height: 50,
-      visibility: 'visible' ,
-      angle: 30,
-      opacity: 0.85
-    });
-    break;
-    */
-
-    //case 'select':
-    //break;
-
     case 'mytriangle':
     var Tri=new fabric.Mytriangle({
         id:'G'+objectCounter,
@@ -1903,22 +1897,23 @@ canvas.on('mouse:move', function(o){
         top: origY,
         width: Math.abs(origX - pointer.x),
         height: Math.abs(origY - pointer.y),
-    right: origX + Math.abs(origX - pointer.x),
-    bottom: origY + Math.abs(origY - pointer.y),
+        right: origX + Math.abs(origX - pointer.x),
+        bottom: origY + Math.abs(origY - pointer.y),
         angle:0,
-        strokeWidth: 2,
+        strokeWidth: strokewidth,
+        strokeDashArray: strokearray,
         fill: null,
         stroke: 'black',
         selectable: true,
         backgroundColor: 'transparent',
         originX: 'left', originY: 'top',
-    effect: null,
+        effect: null,
         easing: "easeOutElastic",
-      ease_att: 'width',
-      ease_value: 10,
-        duration: 1000,
+        ease_att: 'width',
+        ease_value: 10,
+        duration: 3000,
         anim_order: 1,
-      drawType:'Q1'
+        drawType:'Q1'
     });
     if(pointer.x<origX){
       Tri.set({left: pointer.x});
@@ -1956,21 +1951,22 @@ canvas.on('mouse:move', function(o){
     }
     var line = new fabric.Myline([origX, origY, finX, finY], {
       id:'G'+objectCounter,
-  left:origX,
-  top: origY,
-  right: finX,
-  bottom: finY,
+      left:origX,
+      top: origY,
+      right: finX,
+      bottom: finY,
       angle: angg,
       length: Math.sqrt((origX-finX)*(origX-finX)+(origY-finY)*(origY-finY)),
-        stroke: 'black',
-        strokeWidth: 2,
-        selectable: true,
-    effect: null,
-        easing: "easeOutElastic",
+      stroke: 'black',
+      strokeWidth: strokewidth,
+      strokeDashArray: strokearray,
+      selectable: true,
+      effect: null,
+      easing: "easeOutElastic",
       ease_att: 'width',
       ease_value: 10,
-        duration: 1000,
-        anim_order: 1,
+      duration: 2000,
+      anim_order: 1,
       drawType: 'Q1'
       });
   if(pointer.x<origX){
@@ -2007,8 +2003,9 @@ canvas.on('mouse:move', function(o){
 });
 
 canvas.on('mouse:up', function(o){
-  for(var i=0;i<objectCounter;i++){
-   // console.log(ref[i].id);
+  strokewidth=1;
+  for(var i=0;i<objectCounter;i++){ //Updating the Changes in every shapes if any 
+      //console.log(ref[i].id);
       if(ref[i].type=='mycircle'){
         var off=ref[i].strokeWidth;
         var radii=((ref[i].getWidth())-off)/2;
@@ -2017,7 +2014,7 @@ canvas.on('mouse:up', function(o){
         var ang=ref[i].getAngle();
         ref[i].set({angle:ang});
         ref[i].set({radius:radii});
-ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
+        ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].oCoords.br.x, bottom: ref[i].oCoords.br.y});
       }
   else if(ref[i].type == 'myellipse'){
     var off=ref[i].strokeWidth;
@@ -2070,7 +2067,6 @@ ref[i].set({left: ref[i].oCoords.tl.x, top: ref[i].oCoords.tl.y, right: ref[i].o
 
 function Fill(){
   var col=document.getElementById("bottle").value;
-  //console.log(col);
   if(canvas.getActiveObject()){
     canvas.getActiveObject().set({fill:col});
   }
@@ -2104,6 +2100,7 @@ function Copy(){
         backgroundColor: obj.backgroundColor,
         originX: obj.originX, originY: obj.originY,
     effect: obj.effect,
+	strokeDashArray: obj.strokeDashArray,
         easing: obj.easing,
       ease_att: obj.ease_att,
       ease_value: obj.ease_value,
@@ -2129,6 +2126,7 @@ function Copy(){
         backgroundColor: obj.backgroundColor,
         originX: obj.originX, originY: obj.originY,
     effect: obj.effect,
+	strokeDashArray: obj.strokeDashArray,
         easing: obj.easing,
       ease_att: obj.ease_att,
       ease_value: obj.ease_value,
@@ -2155,6 +2153,7 @@ else if(obj.type == 'myrect'){
         backgroundColor: obj.backgroundColor,
         originX: obj.originX, originY: obj.originY,
     effect: obj.effect,
+	strokeDashArray: obj.strokeDashArray,
         easing: obj.easing,
       ease_att: obj.ease_att,
       ease_value: obj.ease_value,
@@ -2182,6 +2181,7 @@ else if(obj.type == 'mytriangle'){
         backgroundColor: obj.backgroundColor,
         originX: obj.originX, originY: obj.originY,
     effect: obj.effect,
+	strokeDashArray: obj.strokeDashArray,
         easing: obj.easing,
       ease_att: obj.ease_att,
       ease_value: obj.ease_value,
@@ -2206,6 +2206,7 @@ else if(obj.type == 'myline'){
         strokeWidth: obj.strokeWidth,
         selectable: obj.selectable,
     effect: obj.effect,
+	strokeDashArray: obj.strokeDashArray,
         easing: obj.easing,
       ease_att: obj.ease_att,
       ease_value: obj.ease_value,
@@ -2222,13 +2223,13 @@ else if(obj.type == 'myline'){
 
 function Paste(){
       if(copiedObject){
-    canvas.add(copiedObject);
-           ref.push(copiedObject);
-           objectCounter++;
-    ref[objectCounter-1].set({id:'G' + objectCounter});
-    canvas.setActiveObject(copiedObject);
-        canvas.renderAll();
-  }
+          canvas.add(copiedObject);
+          ref.push(copiedObject);
+          objectCounter++;
+          ref[objectCounter-1].set({id:'G' + objectCounter});
+          canvas.setActiveObject(copiedObject);
+          canvas.renderAll();
+      }
 }
 
 function deleteObjects(){
@@ -2278,7 +2279,11 @@ function set_att_ease(easea_g){
 }
 
 function duration_change_g(){
-  if(canvas.getActiveObject()){ 
+  if(canvas.getActiveObject()){
+	console.log(first);
+	first++; 
+	if(first == 2) return;
+	
   canvas.getActiveObject().set({duration:parseInt(document.getElementById('duration_g').value)});
   }
 }
@@ -2341,6 +2346,7 @@ function draw_circle(obj,mode){
   startAngle = 0;
   endAngle = (2*Math.PI)/360;
   t = 1;
+	cntr = 0;
   draw_helpc(obj,mode);
   if(mode == 'draw'){
     setTimeout(function(){
@@ -2358,6 +2364,10 @@ function draw_helpc(obj,mode){
   if(mode == 'draw'){
     context.lineWidth = obj.strokeWidth;
     context.strokeStyle = obj.stroke;
+	if(obj.strokeDashArray != null && cntr%4 == 0) {
+		context.lineWidth = 2*obj.strokeWidth;
+    		context.strokeStyle = 'white';
+	}
   }
   else if(mode == 'disa'){
     context.lineWidth = 2*obj.strokeWidth;
@@ -2366,6 +2376,7 @@ function draw_helpc(obj,mode){
   context.stroke();
   startAngle = endAngle;
   t += 2500/obj.duration;
+	cntr++;
   setTimeout(draw_helpc,1,obj,mode);
   
 }
@@ -2378,6 +2389,7 @@ function draw_ellip(obj,mode){
   startAngle = 0;
   endAngle = (2*Math.PI)/360;
   t = 1;
+	cntr = 0;
   console.log(obj.angle);
   draw_helpe(obj,mode);
   if(mode == 'draw'){
@@ -2396,6 +2408,10 @@ function draw_helpe(obj,mode){
   if(mode == 'draw'){
     context.lineWidth = obj.strokeWidth;
     context.strokeStyle = obj.stroke;
+	if(obj.strokeDashArray != null && cntr%4 == 0) {
+		context.lineWidth = 2*obj.strokeWidth;
+    		context.strokeStyle = 'white';
+	}
   }
   else if(mode == 'disa'){
     context.lineWidth = 2*obj.strokeWidth;
@@ -2404,6 +2420,7 @@ function draw_helpe(obj,mode){
   context.stroke();
   startAngle = endAngle;
   t += 2500/obj.duration;
+cntr++;
   setTimeout(draw_helpe,1,obj,mode);
   
 }
@@ -2419,6 +2436,7 @@ function draw_rect(obj,mode){
   B = obj.top;
   C = obj.oCoords.tr.x;
   D = obj.oCoords.tr.y;
+cntr = 0;
 
   draw_helpl(obj,A,B,C,D,obj.width,mode,obj.duration/4);
 
@@ -2427,6 +2445,7 @@ function draw_rect(obj,mode){
     B = obj.oCoords.tr.y;
     C = obj.right;
     D = obj.bottom;
+cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.height,mode,obj.duration/4);}, obj.duration/4);
 
   setTimeout(function(){
@@ -2434,6 +2453,7 @@ function draw_rect(obj,mode){
   B = obj.bottom
   C = obj.oCoords.bl.x;
   D = obj.oCoords.bl.y;
+cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.width,mode,obj.duration/4);}, obj.duration/2);
 
 
@@ -2442,7 +2462,8 @@ function draw_rect(obj,mode){
   B = obj.oCoords.bl.y;
   C = obj.left;
   D = obj.top;
-    draw_helpl(obj,A,B,C,D,obj.height,mode,obj.duration/4);},3*obj.duration/4);
+cntr = 0;
+    draw_helpl(obj,A,B,C,D,obj.height,mode,obj.duration/4);},    3*obj.duration/4);
   
 
   if(mode == 'draw'){
@@ -2463,6 +2484,7 @@ function draw_triangle(obj,mode){
   B = (obj.top+obj.oCoords.tr.y)/2;
   C = obj.right;
   D = obj.bottom;
+cntr = 0;
   var w1 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
   draw_helpl(obj,A,B,C,D,w1,mode,obj.duration/3);
 
@@ -2471,14 +2493,16 @@ function draw_triangle(obj,mode){
     B = obj.bottom;
     C = obj.oCoords.bl.x;
     D = obj.oCoords.bl.y;
+cntr = 0;
     var w2 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
     draw_helpl(obj,A,B,C,D,w2,mode,obj.duration/3);}, obj.duration/3);
 
   setTimeout(function(){
-    A = obj.oCoords.bl.x;
+  A = obj.oCoords.bl.x;
   B = obj.oCoords.bl.y;
   C = (obj.left+obj.oCoords.tr.x)/2;
   D = (obj.top+obj.oCoords.tr.y)/2;
+cntr = 0;
   var w3 = Math.sqrt((C-A)*(C-A)+(D-B)*(D-B));
     draw_helpl(obj,A,B,C,D,w3,mode,obj.duration/3);}, 2*obj.duration/3);
 
@@ -2495,7 +2519,7 @@ var A;
 var B;
 var C;
 var D;
-
+var cntr;
 
 function draw_line(obj,mode){
   if(mode == 'draw'){
@@ -2508,6 +2532,7 @@ function draw_line(obj,mode){
     B = obj.top;
     C = obj.right;
     D = obj.bottom;
+	cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
   }
 
@@ -2516,6 +2541,7 @@ function draw_line(obj,mode){
     B = obj.oCoords.tr.y;
     C = obj.oCoords.bl.x;
     D = obj.oCoords.bl.y;
+	cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
   }
 
@@ -2524,6 +2550,7 @@ function draw_line(obj,mode){
     B = obj.bottom;
     C = obj.left;
     D = obj.top;
+	cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
   }
 
@@ -2532,6 +2559,7 @@ function draw_line(obj,mode){
     D = obj.oCoords.tr.y;
     A = obj.oCoords.bl.x;
     B = obj.oCoords.bl.y;
+	cntr = 0;
     draw_helpl(obj,A,B,C,D,obj.length,mode,obj.duration);
   }
 
@@ -2551,19 +2579,21 @@ function draw_helpl(obj,a,b,c,d,len,mode,time){
   if(mode == 'draw'){
     context.lineWidth = obj.strokeWidth;
     context.strokeStyle = obj.stroke;
+	if(obj.strokeDashArray != null && cntr%4 == 0) {
+		context.lineWidth = 2*obj.strokeWidth;
+    		context.strokeStyle = 'white';
+	}
   }
   else if(mode == 'disa'){
     context.lineWidth = 2*obj.strokeWidth;
     context.strokeStyle = 'white';
   }
-  context.moveTo(a,b);
-  
-  b += (D-B)*6/time;
-  a += (C-A)*6/time;
-    
 
+  context.moveTo(a,b);
+  b += (D-B)*8/time;
+  a += (C-A)*8/time;
+	cntr++;
   context.lineTo(a,b);
-  
   context.stroke();
   setTimeout(draw_helpl,1,obj,a,b,c,d,len,mode,time);
 }
@@ -2611,9 +2641,31 @@ var time_diff;
 
 function show_animation(){
   time_diff = 0;
+    var obj = canvas.getActiveObject();
+    switch(obj.effect){
+      case 'fade in':
+        setTimeout(fade_in,time_diff,obj);
+        break;
+      case 'fade out in':
+        setTimeout(fade_out_in,time_diff,obj);
+        break;
+      case 'draw':
+        setTimeout(draw,time_diff,obj);
+        break;
+      case 'ease':
+        setTimeout(ease,time_diff,obj);
+        break;
+      case 'disappear':
+        setTimeout(disappear,time_diff,obj);
+        break;
+    }
+}
+
+function show_animation_old(){
+  time_diff = 0;
+
   for(var i = 0 ; i < objectCounter; i++){
     var obj = ref[i];
-    //console.log(obj.type + " " + obj.duration + " " + time_diff);
     if(!obj.visible) continue;
     switch(obj.effect){
       case 'fade in':
@@ -2635,6 +2687,7 @@ function show_animation(){
     time_diff += obj.duration;
   }
 }
+
 
 //ANIMATION SCRIPT END
 
