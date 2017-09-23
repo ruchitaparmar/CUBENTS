@@ -1,6 +1,3 @@
-# Mathematics
+CUBENTS: Comprehensive Utility Board for EquatioN Text and Shapes
 
-This project consists of a web application which is a comprehensive utility board.
-It comes with a built in equation parser to write mathematical equations in the correct format.
-It also includes a text editor. Shapes can also be added. All these elements can also be animated.
-The created activity can then be saved and played.
+This a web application consisting of a smart white board with an inbuilt equation parser and customizable shapes and text boxes all of which can be given animation effects. The created content can be saved and retrieved from the database and played when a user requires access to the content.
