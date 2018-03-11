@@ -1,6 +1,6 @@
 ## Introduction
 - The project was accomplished as a part of The National Mission on Education through ICT. 
-- CUBENTS is a web application which consists of an interactive whiteboard. 
+- CUBENTS is a web application which consists of an interactive whiteboard. It stands for <b>C</b>omprehensive <b>U</b>tility <b>B</b>oard for <b>E</b>quatio<b>N</b> <b>T</b>ext and <b>S</b>hapes. 
 
 ## What is CUBENTS?
 - The primary aim of the board is for teachers to be able to create lessons for students.
