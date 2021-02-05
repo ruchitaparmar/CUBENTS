@@ -395,19 +395,18 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <option value="ease">Ease</option>
     <option value="disappear">Disappear</option>		
     </select>
-<br> <br>
-		Easing attribute
+		Choose easing attribute
 		<select id="att_ease_g" onChange= "set_att_ease(this.value);">
 
-	<option value="left">Left</option>
+		<option value="left">Left</option>
     <option value="top">Top</option>
     <option value="width">Width</option>
     <option value="height">Height</option>
     <option value="angle">Angle</option>
     <option value="opacity">Opacity</option>
-		</select>
-&nbsp;
-    Easing Effect
+		</select><br><br>
+
+    Choose Easing Effect
    <select id="easing_g" onChange = "set_easing(this.value);">
     
     <option value="easeInQuad">easeInQuad</option>
@@ -443,7 +442,7 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
   </select>
 
 		
-    <br> <br> Delay:<input id="delay_g" onchange="delay_change_g();">
+    <br> Delay:<input id="delay_g" onchange="delay_change_g();">
 
 		<!-- <input type="text" style="width:60px"> -->&nbsp;&nbsp;
 		<br> Duration:<input id="duration_g" onchange="duration_change_g();">
@@ -453,9 +452,9 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <br> Animation Order:<input id="a_order_g" onchange="anim_order_g()">
 
 		<!-- <input type="text" style="width:60px"> -->&nbsp;
+		<br><br>
 
     <br> Ease Attribute Value:<input id="ease_value_g" onchange="ease_value_g()">
-<br> <br>
         <button class="btn btn-primary" data-dismiss="modal" onclick="show_animation();">Show Graphics Animation</button>
 
 		</center>
@@ -487,17 +486,18 @@ Preview.callback.autoReset = true;  // make sure it can run more than once
     <span class="caret"></span></button>
     <ul class="dropdown-menu">
  <li> <center><div class="btn btn-group">
-
 <button type="button" class="btn btn-default" onclick="shape='line'" title="Line">&#9585;</button>
-
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='rectangle'" title="Rectangle">&#9645;</button>
-
+<button type="button" class="btn btn-default" style="font-size:20px" title="Square">&#9633;</button>
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='triangle'" title="Triangle">&#9651;</button>
-
+</div>
+</center>
+</li>
+<li> <center><div class="btn btn-group" style="margin-top:-12px">
+<button type="button" class="btn btn-default" style="font-size:20px" title="Right angle triangle">&#8895;</button>
 <button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='circle'" title="Circle">&#9711;</button>
-
-<button type="button" class="btn btn-default" style="font-size:20px" onclick="shape='ellipse'" title="Ellipse"> <img src="ellipse_b.png" width="20px" height="20px"></button>
-
+<button type="button" class="btn btn-default" style="font-size:25px" title="Trapezium">&#9671;</button>
+<button type="button" class="btn btn-default" style="font-size:25px" title="Arc">&#9692;</button>
 </div>
 </center>
 </li>
@@ -645,7 +645,7 @@ function URLs(){
     </div>
   </div>
  <!-- Hint Ends-->
-<button class="btn btn-default" onclick="finalAnimation()" title="Play final animation"><i class="fa fa-play"></i></button>&nbsp;&nbsp;
+<button class="btn btn-default" onclick="playAnimation()" title="Play final animation"><i class="fa fa-play"></i></button>&nbsp;&nbsp;
 <div class="modal fade" id="myModal" data-target="#myModal">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -1344,15 +1344,15 @@ var ref=[];
 //var array=[];
 var clipboard;
 //var arrayIndex=0;
-var objectCounter=0;
+var objectCounter=-1;
 var canvas = new fabric.Canvas('canv', { selection: true,stopContextMenu:true });
-/*canvas.upperCanvasEl.addEventListener('contextmenu', function(e) {
+canvas.upperCanvasEl.addEventListener('contextmenu', function(e) {
             document.getElementById("rmenu").className = "show"; 
             document.getElementById("rmenu").style.top =(e.clientY+170) + 'px';
             document.getElementById("rmenu").style.left =(e.clientX+25) + 'px';
             //console.log(document.getElementById("rmenu").style.top);
             e.preventDefault();
-        }, false);*/
+        }, false);
 var shape = null;
 var isDown = false;
 var origX, origY, finX, finY, prev=null;
@@ -1376,6 +1376,7 @@ canvas.on('mouse:move', function(o){
   switch(shape) {
     case 'circle':
     var Circ=new fabric.Circle({
+        id:'G'+objectCounter,
         left: origX,
         top: origY,
         radius: Math.abs(origX - pointer.x)/2,
@@ -1410,18 +1411,21 @@ canvas.on('mouse:move', function(o){
     }
     del(prev);
     if(prev==null){
+      //console.log(Circ.__uid);
       ref.push(Circ);
       objectCounter++;
     }
     else{
       ref[objectCounter-1]=Circ;
     }
+    //console.log(Circ.__uid);
     canvas.add(Circ);
     prev=Circ;
     break;
 
   case 'ellipse':
     var ellip=new fabric.Ellipse({
+      id:'G'+objectCounter,
         left: origX,
         top: origY,
     rx: Math.abs(origX - pointer.x)/2,
@@ -1470,6 +1474,7 @@ canvas.on('mouse:move', function(o){
 
     case 'rectangle':
     var Recta=new fabric.Rect({
+        id:'G'+objectCounter,
         left: origX,
         top: origY,
         width: Math.abs(origX - pointer.x),
@@ -1518,6 +1523,7 @@ canvas.on('mouse:move', function(o){
 
     case 'triangle':
     var Tri=new fabric.Triangle({
+        id:'G'+objectCounter,
         left: origX,
         top: origY,
         width: Math.abs(origX - pointer.x),
@@ -1575,7 +1581,7 @@ canvas.on('mouse:move', function(o){
         angg=prev.getAngle();
     }
     var line = new fabric.Line([origX, origY, finX, finY], {
-      id: objectCounter,
+      id:'G'+objectCounter,
   left:origX,
   top: origY,
   right: finX,
@@ -1629,6 +1635,7 @@ canvas.on('mouse:move', function(o){
 
 canvas.on('mouse:up', function(o){
   for(var i=0;i<objectCounter;i++){
+   // console.log(ref[i].id);
       if(ref[i].type=='circle'){
         var off=ref[i].strokeWidth;
         var radii=((ref[i].getWidth())-off)/2;
@@ -1708,8 +1715,8 @@ function Copy() {
     // Single Object
     if(canvas.getActiveObject()) {
         // Does this object require an async clone?
-        ref.push(canvas.getActiveObject());
-    objectCounter++;
+        //ref.push(canvas.getActiveObject());
+    //objectCounter++;
         if(!fabric.util.getKlass(canvas.getActiveObject().type).async) {
             clipboard = canvas.getActiveObject().clone();
         } else {
@@ -1737,6 +1744,9 @@ function Paste() {
             obj.setTop(obj.top += 10);
             obj.setLeft(obj.left += 10);            
             canvas.add(obj);
+            ref.push(obj);//id:'G'+objectCounter,)
+            objectCounter++;
+            ref[objectCounter-1].set({id:'G'+objectCounter});
             // We do not need to clone async, all groups require async clone
             canvas.setActiveObject(obj);
             clipboard = obj;
@@ -1748,6 +1758,7 @@ function Paste() {
                     canvas.add(obj);
   ref.push(obj);
   objectCounter++;
+  ref[objectCounter-1].set({id:'G'+objectCounter});
 
                 });
                 
@@ -2553,22 +2564,45 @@ function playAnimation(){
             }
         }
     }
+    //console.log(list);
 }
 
 
 //DataBase actions taken here
 //All data sent to the dataBase as JSON
 function queryDataBase(){
+    var graphicsObject=[];
+    for (var i=0;i<ref.length;i++)
+    {
+        //console.log(ref[i].id);
+        graphicsObject.push({
+            id:ref[i].id,
+            object:ref[i],
+            right:ref[i].right,
+            bottom:ref[i].bottom,
+            effect:ref[i].effect,
+            easing: ref[i].easing,
+            ease_att: ref[i].ease_att,
+            ease_value: ref[i].ease_value,
+            delay: ref[i].delay,
+            duration: ref[i].duration,
+            anim_order: ref[i].anim_order,
+            drawType:ref[i].drawType
+        });
+    }
+    //console
+    //console.log(graphicsObject[0].id);
     var activity={
       name:"activity1",
       topic:"topic1",
       text:MyArray,
       equation:math_main_class,
-      graphics:ref,
+      graphics:graphicsObject,
       group:groupArray
     };
+
     json=JSON.stringify(activity);
-    console.log(json);
+    console.log(json);//.graphics.id);
 }
 
 </script>
@@ -2592,15 +2626,49 @@ function Create_Group(){
   }
   AO=canvas.getActiveObject();
   if(AO){
-    groupKid.push(AO);
+    //groupKid.push(AO);
+    groupKid.push({
+            id:AO.id,
+            object:AO,
+            right:AO.right,
+            bottom:AO.bottom,
+            effect:AO.effect,
+            easing: AO.easing,
+            ease_att: AO.ease_att,
+            ease_value: AO.ease_value,
+            delay: AO.delay,
+            duration: AO.duration,
+            anim_order: AO.anim_order,
+            drawType:AO.drawType});
   }
+ // console.log(groupKid[0].id);
   AG=canvas.getActiveGroup();
   if(AG){
     var objects=AG.getObjects();
     objects.forEach(function(object){
-        groupKid.push(object);
-    });
+        //groupKid.push(object);
+        groupKid.push({
+            id:object.id,
+            object:object,
+            right:object.right,
+            bottom:object.bottom,
+            effect:object.effect,
+            easing: object.easing,
+            ease_att: object.ease_att,
+            ease_value: object.ease_value,
+            delay: object.delay,
+            duration: object.duration,
+            anim_order: object.anim_order,
+            drawType:object.drawType});
+
+              });
+    //});
+    //console.log(groupKid[0].id);
+    //console.log(groupKid[1].id);
+    //console.log(groupKid[2].id);
+
   }
+
   var myGroup = new Group(grArraySize);
   myGroup.kid = groupKid;
   groupArray.push(myGroup);
